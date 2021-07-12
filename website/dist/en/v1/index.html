@@ -17,8 +17,8 @@
     <div classs="Title">
       <h1 class="Title/Heading"><img alt="SrcFlow" src="/assets/logo/logo.svg?v=20210707T2000" width="500" height="100" /></h1>
       <p class="Title/SubHeading">v1.0.0-draft.0 — 12 July 2021</p>
-      <p class="Title/MetaData"><small>Copyright © 2021 Kieran Potts | <a rel="external" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0 license</a></small></p>
-      <p class="Title/MetaData"><a href="https://github.com/srcflow/srcflow/blob/main/CHANGELOG.md">Changelog</a> | <a href="https://github.com/srcflow/srcflow/issues">File an issue</a> | <a href="https://github.com/srcflow/srcflow/discussions">Discuss</a></p>
+      <p class="Title/MetaData"><small>Copyright © 2021 Kieran Potts | <a rel="external" href="//creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0 license</a></small></p>
+      <p class="Title/MetaData"><a href="//github.com/srcflow/srcflow/blob/main/CHANGELOG.md">Changelog</a> | <a href="//github.com/srcflow/srcflow/issues">File an issue</a> | <a href="//github.com/srcflow/srcflow/discussions">Discuss</a></p>
     </div>
   </header>
 
@@ -33,12 +33,12 @@
 
       <p>You will find this workflow a natural fit for lean and iterative processes, but it will benefit big-design-up-front practices, too. Whatever the process model, SrcFlow will enforce best practice in commits and code integrations to avert time-sucking merge conflicts. It will scale effortlessly from atomic to epic change requests, and from hobby computer programs to enterprise applications. It is suitable for the development of both applications and libraries, and for both open source and proprietary software.</p>
 
-      <p>SrcFlow is designed for <a rel="external" href="https://git-scm.com/">Git</a> but it could be adapted for similar source control systems such as <a rel="external" href="https://www.mercurial-scm.org/">Mercurial</a>. SrcFlow requires a centralised source control server with functions to clone hosted repositories to downstream client systems. It also requires an issue tracking system and a pull/merge request tool supporting code review. Other development operations infrastructure, including automated "continuous" integration and delivery systems, can be easily plugged in to SrcFlow's source control pipeline.</p>
+      <p>SrcFlow is designed for <a rel="external" href="//git-scm.com/">Git</a> but it could be adapted for similar source control systems such as <a rel="external" href="//www.mercurial-scm.org/">Mercurial</a>. SrcFlow requires a centralised source control server with functions to clone hosted repositories to downstream client systems. It also requires an issue tracking system and a pull/merge request tool supporting code review. Other development operations infrastructure, including automated "continuous" integration and delivery systems, can be easily plugged in to SrcFlow's source control pipeline.</p>
 
-      <p>All-in-one DevOps applications such as <a rel="external" href="https://github.com/">GitHub</a>, <a rel="external" href="https://about.gitlab.com/">GitLab</a> and <a rel="external" href="https://bitbucket.org/">Bitbucket</a> have everything you need to implement SrcFlow.</p>
+      <p>All-in-one DevOps applications such as <a rel="external" href="//github.com/">GitHub</a>, <a rel="external" href="//about.gitlab.com/">GitLab</a> and <a rel="external" href="//bitbucket.org/">Bitbucket</a> have everything you need to implement SrcFlow.</p>
 
       <aside class="RichText/BoxOut RichText/BoxOut--info">
-        <p>This document is a <b>draft</b>. Comments are requested before a <b>final</b> version is published. You are invited to <a href="https://github.com/srcflow/srcflow/discussions">add your comments here</a>.</p>
+        <p>This document is a <b>draft</b>. Comments are requested before a <b>final</b> version is published. You are invited to <a href="//github.com/srcflow/srcflow/discussions">add your comments here</a>.</p>
       </aside>
 
       <!--<hr />-->
@@ -103,13 +103,13 @@
 
         <p>Source control systems — also known as version control, revision control, and source code management systems — are the backbone of software engineering operations.</p>
 
-        <p>The <a rel="external" href="https://git-scm.com/">Git</a> source control system is the <i>de facto</i> industry standard. It was created in 2005 by Linus Torvalds to accommodate development of the Linux kernel. Git's performance and scalability were orders of magnitude better than the solutions that preceded it, and the availability of cheap repository hosting services expedited Git's widespread adoption.</p>
+        <p>The <a rel="external" href="//git-scm.com/">Git</a> source control system is the <i>de facto</i> industry standard. It was created in 2005 by Linus Torvalds to accommodate development of the Linux kernel. Git's performance and scalability were orders of magnitude better than the solutions that preceded it, and the availability of cheap repository hosting services expedited Git's widespread adoption.</p>
 
         <p>Git is hugely powerful. It has many features and is capable of supporting many different approaches to software change management. Git does not enforce any opinions on development workflow, leaving engineering teams to formulate their own strategies for branching and merging.</p>
 
         <p>A <b>branching-and-merging strategy</b> prescribes how code and configuration changes will be introduced, integrated together, then steered through a quality assurance (QA) pipeline toward general release. This is a particularly important consideration in large, complex, and fast moving software projects. To maintain development velocity at scale, constraints need to be imposed on how Git is used by all contributors.</p>
 
-        <p>Vincent Driessen's archetypal <a rel="external" href="http://nvie.com/posts/a-successful-git-branching-model/">GitFlow</a>, and its descendants <a rel="external" href="https://guides.github.com/introduction/flow/">GitHub Flow</a>, <a rel="external" href="https://docs.gitlab.com/ee/topics/gitlab_flow.html">GitLab Flow</a>, and <a rel="external" href="https://www.atlassian.com/git/articles/simple-git-workflow-is-simple">Atlassian's Simple Git Workflow</a>, are examples of branching-and-merging strategies that can be used to shepherd code changes from development via testing to production. <a rel="external" href="https://www.endoflineblog.com/oneflow-a-git-branching-model-and-workflow">There</a> <a rel="external" href="https://www.atlassian.com/git/tutorials/comparing-workflows/forking-workflow">are</a> <a rel="external" href="https://deepsource.io/blog/git-branch-naming-conventions/">many</a> <a rel="external" href="https://openkinect.org/wiki/Code_Integration">other</a> <a rel="external" href="https://docs.rapids.ai/resources/git/">variations</a>.</p>
+        <p>Vincent Driessen's archetypal <a rel="external" href="//nvie.com/posts/a-successful-git-branching-model/">GitFlow</a>, and its descendants <a rel="external" href="//guides.github.com/introduction/flow/">GitHub Flow</a>, <a rel="external" href="//docs.gitlab.com/ee/topics/gitlab_flow.html">GitLab Flow</a>, and <a rel="external" href="//www.atlassian.com/git/articles/simple-git-workflow-is-simple">Atlassian's Simple Git Workflow</a>, are examples of branching-and-merging strategies that can be used to shepherd code changes from development via testing to production. <a rel="external" href="//github.com/srcflow/srcflow/blob/main/ref/branching-strategies.md">There are many, many other possible variations</a>.</p>
 
         <p>Branching-and-merging strategies tend to be optimised for specific workflow requirements. For example, GitFlow was fashioned for the intermitted release of versioned software. It was not intended for continuously delivered, singly versioned software like webapps. GitLab Flow is better for that. Meanwhile, the minimalist GitHub Flow is ideal for solo maintainers of small packages.</p>
 
@@ -161,7 +161,7 @@
 
         <h3 id="scope">Scope</h3>
 
-        <p>As well as specifying branch naming conventions and prescribing integration methodologies, SrcFlow has opinions on how issues should be organised and tagged, how commit messages should be formatted, and how pull/merge requests should be prepared and handled. SrcFlow is thus broader in scope that most branching-and-merging strategies. But it is not a complete software engineering process framework like <a rel="external" href="https://scrumguides.org/scrum-guide.html">Scrum</a> and <a rel="external" href="https://less.works/">LeSS</a>, <a rel="external" href="https://isbnsearch.org/isbn/9780321278654">Extreme Programming</a> and <a rel="external" href="http://www.industrialxp.org/">Industrial XP</a>, the many flavours of the <a rel="external" href="https://isbnsearch.org/isbn/0201571692">Unified Process</a>, and <a rel="external" href="https://isbnsearch.org/isbn/1790447844">DAD</a>, <a rel="external" href="https://www.scaledagileframework.com/">SAFe</a> and <a rel="external" href="https://web.archive.org/web/20161002055756/https://www.dsdm.org/">DSDM</a>. SrcFlow deals with the practicalities of managing change in software at the <em>code and configuration</em> level. It is less concerned with managing change in software at the <em>team and organisation</em> levels. SrcFlow is therefore one component of wider engineering processes. The following processes, for example, are outside of SrcFlow's scope:</p>
+        <p>As well as specifying branch naming conventions and prescribing integration methodologies, SrcFlow has opinions on how issues should be organised and tagged, how commit messages should be formatted, and how pull/merge requests should be prepared and handled. SrcFlow is thus broader in scope that most branching-and-merging strategies. But it is not a complete software engineering process framework like <a rel="external" href="//scrumguides.org/scrum-guide.html">Scrum</a> and <a rel="external" href="//less.works/">LeSS</a>, <a rel="external" href="//isbnsearch.org/isbn/9780321278654">Extreme Programming</a> and <a rel="external" href="//www.industrialxp.org/">Industrial XP</a>, the many flavours of the <a rel="external" href="//isbnsearch.org/isbn/0201571692">Unified Process</a>, and <a rel="external" href="//isbnsearch.org/isbn/1790447844">DAD</a>, <a rel="external" href="//www.scaledagileframework.com/">SAFe</a> and <a rel="external" href="//web.archive.org/web/20161002055756/https://www.dsdm.org/">DSDM</a>. SrcFlow deals with the practicalities of managing change in software at the <em>code and configuration</em> level. It is less concerned with managing change in software at the <em>team and organisation</em> levels. SrcFlow is therefore one component of wider engineering processes. The following processes, for example, are outside of SrcFlow's scope:</p>
 
         <ul class="RichText--narrow">
           <li>Requirements gathering and analysis, and definition of acceptance criteria</li>
@@ -182,11 +182,11 @@
           <li>Appreciate the railway metaphors of the main line tracks and side branches</li>
         </ul>
 
-        <p>The code examples in this documentation assume you have <a rel="external" href="https://git-scm.com/downloads">Git v2.20 or newer</a> installed on your system.</p>
+        <p>The code examples in this documentation assume you have <a rel="external" href="//git-scm.com/downloads">Git v2.20 or newer</a> installed on your system.</p>
 
         <p>As well as the Git source control system, SrcFlow requires other development operations infrastructure. At the very least, SrcFlow requires a centralised issue tracking system and a pull/merge request tool supporting code review. Open source software projects will require these tools to be publicly accessible. SrcFlow also requires an authorisation layer to extend Git on the server-side with features such as branch protection.</p>
 
-        <p><a rel="external" href="https://github.com/">GitHub</a>, <a rel="external" href="https://about.gitlab.com/">GitLab</a>, <a rel="external" href="https://bitbucket.org/">Bitbucket</a>, and other all-in-one DevOps applications will provide everything you need to implement SrcFlow.</p>
+        <p><a rel="external" href="//github.com/">GitHub</a>, <a rel="external" href="//about.gitlab.com/">GitLab</a>, <a rel="external" href="//bitbucket.org/">Bitbucket</a>, and other all-in-one DevOps applications will provide everything you need to implement SrcFlow.</p>
 
         <h3 id="roles">Roles</h3>
 
@@ -221,7 +221,7 @@
 
         <h3 id="terminology">Terminology</h3>
 
-        <p>In this documentation, the capitalised words MUST and MUST NOT, SHOULD and SHOULD NOT, REQUIRED and RECOMMENDED, and MAY and OPTIONAL, are to be interpreted as per the IETF's <a rel="external" href="https://www.ietf.org/rfc/rfc2119.txt">RFC 2119</a> convention.</p>
+        <p>In this documentation, the capitalised words MUST and MUST NOT, SHOULD and SHOULD NOT, REQUIRED and RECOMMENDED, and MAY and OPTIONAL, are to be interpreted as per the IETF's <a rel="external" href="//www.ietf.org/rfc/rfc2119.txt">RFC 2119</a> convention.</p>
 
         <p>The terms pull request and merge request refer to the same operation. Some DevOps applications choose the name pull request (eg GitHub and Bitbucket), while others choose the name merge request (eg GitLab). To avoid confusion, in this documentation the terms are fused together as pull/merge request.</p>
 
@@ -414,7 +414,7 @@
 
         <hr />
 
-        <p>Changes are committed directly, or merged into, the <code>latest/dev</code> branch only when those changes are planned for inclusion in the next release of the software. Some testing and other quality checks will have already been undertaken by Engineers — working from their [issue branches](https://gitlab.com/radius-analytics/technical-documentation/-/blob/main/operations/source-control/strategies/branching/issue-branches.md) — before their code reaches this stage.</p>
+        <p>Changes are committed directly, or merged into, the <code>latest/dev</code> branch only when those changes are planned for inclusion in the next release of the software. Some testing and other quality checks will have already been undertaken by Engineers — working from their [issue branches](//gitlab.com/radius-analytics/technical-documentation/-/blob/main/operations/source-control/strategies/branching/issue-branches.md) — before their code reaches this stage.</p>
 
         <p>[Engineers] are entrusted to cover their code with automated tests at the unit, integration and system levels, as much as they need to be confident that their code is correct. As part of code review procedures, Tech Leads should review these tests and may choose to extend test coverage themselves, or request the [Engineers] to do so.</p>
 
@@ -657,9 +657,9 @@
 
         <!--
 
-        <p>Because [each issue will be centred on one discrete, atomic change](https://gitlab.com/radius-analytics/technical-documentation/-/blob/main/operations/source-control/strategies/issue-tracking.md), it follows that issue branches will be focused on specific problems to solve in the software. Even so, those narrowly-scoped issues should be broken down into a series of atomic implementation steps, which are represented by commits.</p>
+        <p>Because [each issue will be centred on one discrete, atomic change](//gitlab.com/radius-analytics/technical-documentation/-/blob/main/operations/source-control/strategies/issue-tracking.md), it follows that issue branches will be focused on specific problems to solve in the software. Even so, those narrowly-scoped issues should be broken down into a series of atomic implementation steps, which are represented by commits.</p>
 
-        <p>Modifications to source code should be accompanied by relevant changes to documentation, automated test scripts and other supporting materials in the same commits. The _quality_ of an implementation — its level of engineering excellence, and the breadth and depth of documentation, tests and other supporting materials — is a decision delegated to the individual Engineers assigned to the implementation. But these decisions should be guided by the quality constraints defined in the [design documents](https://gitlab.com/radius-analytics/technical-documentation/-/blob/main/operations/process/design.md) and the [System Requirements Specification](https://gitlab.com/radius-analytics/specifications).</p>
+        <p>Modifications to source code should be accompanied by relevant changes to documentation, automated test scripts and other supporting materials in the same commits. The _quality_ of an implementation — its level of engineering excellence, and the breadth and depth of documentation, tests and other supporting materials — is a decision delegated to the individual Engineers assigned to the implementation. But these decisions should be guided by the quality constraints defined in the [design documents](//gitlab.com/radius-analytics/technical-documentation/-/blob/main/operations/process/design.md) and the [System Requirements Specification](//gitlab.com/radius-analytics/specifications).</p>
 
         <p>Note, the commit history of issue branches CAN be mutated.</p>
 
@@ -669,7 +669,7 @@
 
         <!--
 
-        <p>SrcFlow RECOMMENDS use of the <a rel="external" href="https://semver.org/">Semantic Versioning</a> standard. The format for semantic version number is:</p>
+        <p>SrcFlow RECOMMENDS use of the <a rel="external" href="//semver.org/">Semantic Versioning</a> standard. The format for semantic version number is:</p>
 
         <figure>
           <pre>[major].[minor].[patch]</pre>
@@ -733,11 +733,11 @@
 
         <ul>
 
-          <li>**GitHub**: From the upstream repository's homepage, go to "Releases" and click "Draft a new release". Select the latest version tag on the <code>latest/prod</code> branch. The release title should match the version number, e.g. "v2.3.11". For the short summary, copy the release notes from the <code>CHANGELOG</code> file. Click "Publish release". GitHub will automatically generate a compressed archive of the source code, but you can also manually attach binaries and other compiled objects to the release. You can automate this process using GitHub's [Releases API](https://developer.github.com/v3/repos/releases/).</li>
+          <li>**GitHub**: From the upstream repository's homepage, go to "Releases" and click "Draft a new release". Select the latest version tag on the <code>latest/prod</code> branch. The release title should match the version number, e.g. "v2.3.11". For the short summary, copy the release notes from the <code>CHANGELOG</code> file. Click "Publish release". GitHub will automatically generate a compressed archive of the source code, but you can also manually attach binaries and other compiled objects to the release. You can automate this process using GitHub's [Releases API](//developer.github.com/v3/repos/releases/).</li>
 
-          <li>**GitLab**: GitLab does not provide a GUI to record formal releases, but this can be done via GitLab's [Releases API](https://gitlab.com/help/api/releases/index.md).</li>
+          <li>**GitLab**: GitLab does not provide a GUI to record formal releases, but this can be done via GitLab's [Releases API](//gitlab.com/help/api/releases/index.md).</li>
 
-          <li>**Bitbucket**: [BitBucket Pipelines](https://bitbucket.org/product/features/pipelines) can be used to generate and deploy builds to [Bitbucket Downloads](https://confluence.atlassian.com/bitbucket/deploy-build-artifacts-to-bitbucket-downloads-872124574.html).</li>
+          <li>**Bitbucket**: [BitBucket Pipelines](//bitbucket.org/product/features/pipelines) can be used to generate and deploy builds to [Bitbucket Downloads](//confluence.atlassian.com/bitbucket/deploy-build-artifacts-to-bitbucket-downloads-872124574.html).</li>
 
         </ul>
 
@@ -1151,7 +1151,7 @@ When an Engineer has a new issue assigned to them, they should follow the instru
 
     #### Acceptance criteria
 
-    - [ ] The URL https://example.com/locations returns 200 OK and a "Coming soon" message
+    - [ ] The URL //example.com/locations returns 200 OK and a "Coming soon" message
     ```
 
     Assign one of the project's Tech Leads to review your work. Assign the same Tech Lead to the corresponding issue, since the Tech Lead will now take ownership of the issue branch, too.
@@ -1236,7 +1236,7 @@ A Tech Lead merges development branches onto the main line tracks — starting w
     - Another change recently merged but not yet released
     ```
 
-    The format of the changelog should be based on the [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) convention.
+    The format of the changelog should be based on the [Keep a Changelog](//keepachangelog.com/en/1.0.0/) convention.
 
     Commit the changes to the CHANGELOG.
 
@@ -1516,7 +1516,7 @@ When all of the changes for the next release are merged, reviewed and tested, yo
         <h2 id="resources">Resources</h2>
         <p>Further reading and related resources that you may find useful.</p>
         <ul>
-          <li><a rel="external" href="https://kieranpotts/srcflow">The author's blogpost that introduces SrcFlow</li>
+          <li><a rel="external" href="//kieranpotts/introducing-srcflow">The author's blogpost that introduces SrcFlow</li>
         </ul>
       </div>
     </section>
