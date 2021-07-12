@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 400 400" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+  <g id="favicon">
+    <circle id="circle" cx="324.559" cy="324.559" r="68.441" style="fill:rgb(168,216,240);stroke:rgb(82,177,224);stroke-width:10px;"/>
+    <rect x="159.611" y="323.996" width="76.12" height="13.888" style="fill:rgb(179,179,179);"/>
+    <circle id="circle1" serif:id="circle" cx="75.441" cy="324.559" r="68.441" style="fill:rgb(247,191,151);stroke:rgb(240,139,66);stroke-width:10px;"/>
+    <path d="M246.733,131.341L127.061,251.014L136.881,260.835L256.554,141.162L246.733,131.341Z" style="fill:rgb(179,179,179);"/>
+    <circle id="circle2" serif:id="circle" cx="324.559" cy="75.441" r="68.441" style="fill:rgb(201,219,112);stroke:rgb(161,184,46);stroke-width:10px;"/>
+  </g>
+</svg>

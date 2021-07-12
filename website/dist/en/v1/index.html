@@ -1,0 +1,1536 @@
+<!doctype html>
+
+<html dir="ltr" lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>SrcFlow</title>
+  <meta name="description" content="A simple Git-based workflow for managing change in software source code and configuration." />
+  <link rel="icon" href="/assets/favicon/favicon.ico?v=20210709T2000" />
+  <link rel="icon" href="/assets/favicon/favicon.png?v=20210709T2000" type="image/png" />
+  <link rel="icon" href="/assets/favicon/favicon.svg?v=20210709T2000" type="image/svg+xml" />
+  <link rel="stylesheet" href="/assets/css/main.css?v=20210709T2030" />
+</head>
+<body class="SPEC">
+
+  <header class="SPEC/SECTION SPEC/SECTION_OPENER" id="top">
+    <div classs="Title">
+      <h1 class="Title/Heading"><img alt="SrcFlow" src="/assets/logo/logo.svg?v=20210707T2000" width="500" height="100" /></h1>
+      <p class="Title/SubHeading">v1.0.0-draft.0 — 7 July 2021</p>
+      <p class="Title/MetaData"><small>Copyright © 2021 Kieran Potts | <a rel="external" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0 license</a></small></p>
+      <p class="Title/MetaData"><a href="https://github.com/srcflow/srcflow/blob/main/CHANGELOG.md">Changelog</a> | <a href="https://github.com/srcflow/srcflow/issues">File an issue</a> | <a href="https://github.com/srcflow/srcflow/discussions">Discuss</a></p>
+    </div>
+  </header>
+
+  <section class="SPEC/SECTION">
+    <div class="RichText">
+
+      <h2 class="text-only">Introduction</h2>
+
+      <p>SrcFlow — pronounced "source flow" — is a workflow for managing change in software source code and configuration.</p>
+
+      <p>In the SrcFlow workflow, an intuitive branching-and-merging strategy models the real-world software engineering life cycle, and source source control and issue tracking systems are bound together to manage software requirements through every phase of that life cycle: from initial reporting of incidents and specification of business needs, via the design and implementation of solutions in code and configuration, to acceptance of those solutions and their release to production systems.</p>
+
+      <p>You will find this workflow a natural fit for lean and iterative processes, but it will benefit big-design-up-front practices, too. Whatever the process model, SrcFlow will enforce best practice in commits and code integrations to avert time-sucking merge conflicts. It will scale effortlessly from atomic to epic change requests, and from hobby computer programs to enterprise applications. It is suitable for the development of both applications and libraries, and for both open source and proprietary software.</p>
+
+      <p>SrcFlow is designed for <a rel="external" href="https://git-scm.com/">Git</a> but it could be adapted for similar source control systems such as <a rel="external" href="https://www.mercurial-scm.org/">Mercurial</a>. SrcFlow requires a centralised source control server with functions to clone hosted repositories to downstream client systems. It also requires an issue tracking system and a pull/merge request tool supporting code review. Other development operations infrastructure, including automated "continuous" integration and delivery systems, can be easily plugged in to SrcFlow's source control pipeline.</p>
+
+      <p>All-in-one DevOps applications such as <a rel="external" href="https://github.com/">GitHub</a>, <a rel="external" href="https://about.gitlab.com/">GitLab</a> and <a rel="external" href="https://bitbucket.org/">Bitbucket</a> have everything you need to implement SrcFlow.</p>
+
+      <aside class="RichText/BoxOut RichText/BoxOut--info">
+        <p>This document is a <b>draft</b>. Comments are requested before a <b>final</b> version is published. You are invited to <a href="https://github.com/srcflow/srcflow/discussions">add your comments here</a>.</p>
+      </aside>
+
+      <!--<hr />-->
+
+    </div>
+  </section>
+
+  <nav class="SPEC/SECTION SPEC/SECTION_TOC">
+    <div class="ToC">
+      <h2 class="ToC/Title text-only@lg" id="contents">Contents</h2>
+      <ol class="ToC/List">
+        <li class="ToC/List/Entry"><a class="ToC/List/Entry/Link" href="#top">Introduction</a></li>
+        <li class="ToC/List/Entry"><a class="ToC/List/Entry/Link" href="#background">Background</a>
+          <ol class="ToC/SubList">
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#purpose">Purpose</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#features">Features</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#benefits">Benefits</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#scope">Scope</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#prerequisites">Prerequisites</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#roles">Roles</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#terminology">Terminology</a></li>
+          </ol>
+        </li>
+        <li class="ToC/List/Entry"><a class="ToC/List/Entry/Link" href="#strategies">Strategies</a>
+          <ol class="ToC/SubList">
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#issue-tracking">Issue tracking</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#cloning">Cloning</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#branching">Branching</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#access-controls">Access controls</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#environments">Environments</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#integration">Integration</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#committing">Committing</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#versioning">Versioning</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#releasing">Releasing</a></li>
+          </ol>
+        </li>
+        <li class="ToC/List/Entry"><a class="ToC/List/Entry/Link" href="#process">Process</a>
+          <ol class="ToC/SubList">
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#provision">Provision</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#clone">Clone</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#triage">Triage</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#commit">Commit</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#push">Push</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#merge">Merge</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#test">Test</a></li>
+            <li class="ToC/SubList/Entry"><a class="ToC/SubList/Entry/Link" href="#release">Release</a></li>
+          </ol>
+        </li>
+        <li class="ToC/List/Entry"><a class="ToC/List/Entry/Link" href="#variations">Variations</a></li>
+        <li class="ToC/List/Entry"><a class="ToC/List/Entry/Link" href="#resources">Resources</a></li>
+      </ol>
+    </div>
+  </nav>
+
+  <main>
+    <section class="SPEC/SECTION">
+      <div class="RichText">
+
+        <h2 id="background">Background</h2>
+
+        <h3 id="purpose">Purpose</h3>
+
+        <p>Source control systems — also known as version control, revision control, and source code management systems — are the backbone of software engineering operations.</p>
+
+        <p>The <a rel="external" href="https://git-scm.com/">Git</a> source control system is the <i>de facto</i> industry standard. It was created in 2005 by Linus Torvalds to accommodate development of the Linux kernel. Git's performance and scalability were orders of magnitude better than the solutions that preceded it, and the availability of cheap repository hosting services expedited Git's widespread adoption.</p>
+
+        <p>Git is hugely powerful. It has many features and is capable of supporting many different approaches to software change management. Git does not enforce any opinions on development workflow, leaving engineering teams to formulate their own strategies for branching and merging.</p>
+
+        <p>A <b>branching-and-merging strategy</b> prescribes how code and configuration changes will be introduced, integrated together, then steered through a quality assurance (QA) pipeline toward general release. This is a particularly important consideration in large, complex, and fast moving software projects. To maintain development velocity at scale, constraints need to be imposed on how Git is used by all contributors.</p>
+
+        <p>Vincent Driessen's archetypal <a rel="external" href="http://nvie.com/posts/a-successful-git-branching-model/">GitFlow</a>, and its descendants <a rel="external" href="https://guides.github.com/introduction/flow/">GitHub Flow</a>, <a rel="external" href="https://docs.gitlab.com/ee/topics/gitlab_flow.html">GitLab Flow</a>, and <a rel="external" href="https://www.atlassian.com/git/articles/simple-git-workflow-is-simple">Atlassian's Simple Git Workflow</a>, are examples of branching-and-merging strategies that can be used to shepherd code changes from development via testing to production. <a rel="external" href="https://www.endoflineblog.com/oneflow-a-git-branching-model-and-workflow">There</a> <a rel="external" href="https://www.atlassian.com/git/tutorials/comparing-workflows/forking-workflow">are</a> <a rel="external" href="https://deepsource.io/blog/git-branch-naming-conventions/">many</a> <a rel="external" href="https://openkinect.org/wiki/Code_Integration">other</a> <a rel="external" href="https://docs.rapids.ai/resources/git/">variations</a>.</p>
+
+        <p>Branching-and-merging strategies tend to be optimised for specific workflow requirements. For example, GitFlow was fashioned for the intermitted release of versioned software. It was not intended for continuously delivered, singly versioned software like webapps. GitLab Flow is better for that. Meanwhile, the minimalist GitHub Flow is ideal for solo maintainers of small packages.</p>
+
+        <p>Indeed, software projects tend to each have fairly unique sets of conventions for branching, committing, merging, versioning, and so on. There is a great deal of inconsistency in approaches to source control management. Where software houses <em>do</em> embrace conventions like GitFlow, those workflows tend to get shoehorned rather awkwardly into the organisation's wider engineering processes, creating drag on development velocity.</p>
+
+        <p>There could never be a one-size-fits-all strategy for source control management. Software engineering operations — and software itself — vary too widely to make that possible. But, to further productivity, we should strive to have a little more consistency.</p>
+
+        <p>SrcFlow offers a more <em>scalable</em> approach to source control management.</p>
+
+        <p>SrcFlow is an <b>extensible source control workflow</b>. SrcFlow's principal constraints make it a great fit for small-scale software projects. From that baseline, the workflow can be extended to better fit the singular engineering process of each software house. For example, SrcFlow can be extended to accommodate multi-step QA processes, to allow maintenance of long-term support (LTS) releases, and to handle "epics" that can't be regularly integrated.</p>
+
+        <p>Think of SrcFlow as a <em>template</em> for source control workflows, rather than a rigid <em>framework</em>. SrcFlow is effectively a collection of best practices for source control management from which you can cherry-pick the practices that will bring the greatest value to your software projects.</p>
+
+        <h3 id="features">Features</h3>
+
+        <p>There are three distinguishing features of SrcFlow's baseline constraints:</p>
+
+        <ol>
+
+          <li>All changes to software source code and configuration, and to documentation, automated test scripts and other supporting materials, are initiated and monitored throughout their life cycle via a centralised issue tracking system.</li>
+
+          <li>Each issue in the tracker has a corresponding branch in the source control repository. These branches are short-lived and semantically they are equivalent to the "feature branches" and "topic branches" of other source control workflows. In SrcFlow, these branches are called "issue branches".</li>
+
+          <li>Each of the stages of the software development and release life cycle — development, alpha, beta, release candidate (RC), and stable — is represented by a permanent branch. Changes in code and configuration flow through these branches as they pass each progressive QA step. Not all software projects require the same quality constraints, so most of these branches are optional.</li>
+
+        </ol>
+
+        <h3 id="benefits">Benefits</h3>
+
+        <p>SrcFlow brings the following benefits to software projects:</p>
+
+        <ul>
+
+          <li>SrcFlow puts the issue tracking system front-and-centre of development operations. This makes it easy to monitor work-in-progress. Branch name and commit message conventions create a tight coupling between the source control and issue tracking systems. This means all historical changes to the code and configuration of the software under source control can be traced back to entries in the issue tracker, where the originating business requirements are recorded.</li>
+
+          <li>SrcFlow's branching strategy feels natural and instinctive. Source changes flow through branches that map to distinct phases of the software development and release life cycle: from development, via alpha and beta testing, then acceptance testing, and finally release.</li>
+
+          <li>All development, testing and release operations are tethered to the source control system. It is easy to plug in automated systems — eg continuous integration and continuous delivery pipelines — to handle recurring operations.</li>
+
+          <li>SrcFlow adopts Git's <em>rebase</em> method, rather than its default <em>merge</em> method, to handle integrations from multiple branches of development. Rebasing reduces the recurrence of merge conflicts, and it helps to keep the tips of the production-grade branches in a pristine, deployable state at all times.</li>
+
+          <li>The commit history is kept clean and its chronology is based on time of <em>integration</em> rather than time of <em>development</em>. This means the command <code>git log</code> outputs a meaningful changelog.</li>
+
+          <li>SrcFlow can be scaled for all sorts of software projects. It can be used for both open source software, developed collaboratively via public source control repositories, and for proprietary software, developed privately. It can be used to develop both libraries and applications, assembled from mono- or multi-repos. It can be adapted to fit software that is continuously delivered or rolled out on a periodic release train. And, optionally, multiple software versions can be maintained in parallel, accommodating long-term support (LTS) policies.</li>
+
+          <li>SrcFlow is easy. You need to remember only a subset of <code>git</code> commands.</li>
+
+        </ul>
+
+        <h3 id="scope">Scope</h3>
+
+        <p>As well as specifying branch naming conventions and prescribing integration methodologies, SrcFlow has opinions on how issues should be organised and tagged, how commit messages should be formatted, and how pull/merge requests should be prepared and handled. SrcFlow is thus broader in scope that most branching-and-merging strategies. But it is not a complete software engineering process framework like <a rel="external" href="https://scrumguides.org/scrum-guide.html">Scrum</a> and <a rel="external" href="https://less.works/">LeSS</a>, <a rel="external" href="https://isbnsearch.org/isbn/9780321278654">Extreme Programming</a> and <a rel="external" href="http://www.industrialxp.org/">Industrial XP</a>, the many flavours of the <a rel="external" href="https://isbnsearch.org/isbn/0201571692">Unified Process</a>, and <a rel="external" href="https://isbnsearch.org/isbn/1790447844">DAD</a>, <a rel="external" href="https://www.scaledagileframework.com/">SAFe</a> and <a rel="external" href="https://web.archive.org/web/20161002055756/https://www.dsdm.org/">DSDM</a>. SrcFlow deals with the practicalities of managing change in software at the <em>code and configuration</em> level. It is less concerned with managing change in software at the <em>team and organisation</em> levels. SrcFlow is therefore one component of wider engineering processes. The following processes, for example, are outside of SrcFlow's scope:</p>
+
+        <ul class="RichText--narrow">
+          <li>Requirements gathering and analysis, and definition of acceptance criteria</li>
+          <li>Prioritisation of business requirements, and issue triage</li>
+          <li>Scheduling, resourcing, and cost estimation</li>
+          <li>System architecture and design</li>
+          <li>Testing and other quality assurance procedures</li>
+          <li>Software release schedules</li>
+        </ul>
+
+        <h3 id="prerequisites">Prerequisites</h3>
+
+        <p>This documentation assumes familiarity with source control systems and wider software development operations. To understand SrcFlow, you will need to:</p>
+
+        <ul class="RichText--narrow">
+          <li>Understand the concepts of committing, branching, cloning and merging</li>
+          <li>Know the difference between local, origin and upstream repositories</li>
+          <li>Appreciate the railway metaphors of the main line tracks and side branches</li>
+        </ul>
+
+        <p>The code examples in this documentation assume you have <a rel="external" href="https://git-scm.com/downloads">Git v2.20 or newer</a> installed on your system.</p>
+
+        <p>As well as the Git source control system, SrcFlow requires other development operations infrastructure. At the very least, SrcFlow requires a centralised issue tracking system and a pull/merge request tool supporting code review. Open source software projects will require these tools to be publicly accessible. SrcFlow also requires an authorisation layer to extend Git on the server-side with features such as branch protection.</p>
+
+        <p><a rel="external" href="https://github.com/">GitHub</a>, <a rel="external" href="https://about.gitlab.com/">GitLab</a>, <a rel="external" href="https://bitbucket.org/">Bitbucket</a>, and other all-in-one DevOps applications will provide everything you need to implement SrcFlow.</p>
+
+        <h3 id="roles">Roles</h3>
+
+        <p>This documentation uses the following terms to refer to roles and responsibilities within software engineering teams. These will map to different job positions within different organisations. Ordinarily, the duties of some of these roles will be distributed between multiple specialists, while other requirements will be collective responsibility.</p>
+
+        <ul>
+
+          <li><b>Product Owner</b>: A Product Owner is a business domain expert. They are usually the business owner or the customer on whose behalf the software is developed, or a representative of the system's end users (the "voice of the customer"). The Product Owner sets the general direction of development, determining <em>what</em> gets made and <em>when</em>, without getting too involved in the details of <em>how</em>. The Product Owner collaborates with Lead Engineers to define user acceptance criteria, and gives final sign-off to changes being distributed to production systems.</li>
+
+          <li><b>Lead Engineer</b>: Lead Engineers work at the interface between the business owner or the end users of the software (the problem domain) and the technical specialists who will make that software a reality (the solution domain). Lead Engineers coordinate the activity of Engineers and Testers, and are ultimately responsible for delivery of software requirements as defined and prioritised by the Product Owner. In the authorisation layer that fronts the upstream source control server, Lead Engineers will have a maintainer-like role that grants them privileges to (among other things) create and destroy source control repositories, configure branch protection rules and default targets for merging, and manage the access of other contributors.</li>
+
+          <!--
+
+          Maintainers are also able to introduce commits directly to the default branch (`latest/dev`), bypassing the pull/merge request system and the code review process. By contrast, most Engineers will have more constrained write permissions.
+
+          The day-to-day work of a Lead Engineer will involve:
+
+          - Assigning issues to team members (issue triage)
+          - Monitoring work-in-progress
+          - Reviewing code integrations
+          - And otherwise coordinating all the activity of Engineers and Testers
+
+          -->
+
+          <li><b>Engineer</b>: An Engineer is anyone  who commits changes to source code and configuration, and supporting materials such as test cases and documentation, <em>directly</em> to the upstream source control repositories (though their access may be restricted to writing to specific unprotected branches). In reality, this role will encompass a number of specialist technical subdomains: software engineering, system administration, database administration, user experience design, and so on.</li>
+
+          <li><b>Contributor</b>: This term is used to refer to anyone who contributes changes to a software project but who has read-only permissions on the project's upstream source control repository. To write changes to that repository, a Contributor must create their own clone of the upstream repository on another server, then request that the Lead Engineers fetch-and-merge their changes from their fork.</li>
+
+          <li><b>Tester</b>: Testers review changes to the code and configuration of the software under source control, as well as related supporting materials such as automated test scripts, ahead of the release of those changes to production systems. For the purpose of SrcFlow's documentation, this role is responsible for all QA activity.</li>
+
+        </ul>
+
+        <h3 id="terminology">Terminology</h3>
+
+        <p>In this documentation, the capitalised words MUST and MUST NOT, SHOULD and SHOULD NOT, REQUIRED and RECOMMENDED, and MAY and OPTIONAL, are to be interpreted as per the IETF's <a rel="external" href="https://www.ietf.org/rfc/rfc2119.txt">RFC 2119</a> convention.</p>
+
+        <p>The terms pull request and merge request refer to the same operation. Some DevOps applications choose the name pull request (eg GitHub and Bitbucket), while others choose the name merge request (eg GitLab). To avoid confusion, in this documentation the terms are fused together as pull/merge request.</p>
+
+      </div>
+    </section>
+
+    <section class="SPEC/SECTION">
+      <div class="RichText">
+
+        <h2 id="strategies">Strategies</h2>
+
+        <p>This section sets out SrcFlow's broad strategies for branching, committing, merging, versioning, and more. The subsequent <a href="#process">Process</a> section will put all this into a step-by-step workflow.</p>
+
+        <h3 id="issue-tracking">Issue tracking</h3>
+
+        <p>Issue tracking is front-and-centre of SrcFlow.</p>
+
+        <p>Any significant change to the source code of any software component MUST be initiated with the opening of a new issue in the tracker adjoining the relevant upstream code repository.</p>
+
+        <!--
+
+        Epics MUST be broken down into atomics... TODO: Put this in advanced workflows: child issue branches will flow into a parent issue branch when all components of an epic are complete.
+
+        <p>There are some exceptions. Trivial changes that do not alter the configuration or behaviour of the software can bypass the issue tracking system. [Tech Leads] have the necessary [access rights] to commit directly to the [main line tracks], and they may exercise this right when they edit technical documentation, automated test scripts, and other supporting materials. But every non-trivial change to the actual software under source control must be traceable back to an issue.</p>
+
+        <p>Each issue should centre on one discrete, atomic change. And each issue must clearly define the goal for implementing that change. Having a reason for every change is important for a number of reasons. Not least, it helps to keep the scope of changes small and focused.</p>
+
+        <p>Epics should be broken down into smaller steps of incremental development, covered by multiple issues, wherever possible. Where issues span multiple code repositories, the best thing to do is create an issue for each, and link them all together.</p>
+
+        <p>The assignment of an issue to an [Engineer] is the trigger for [implementation] of the necessary changes. Thereafter, our [branching strategy] enforces a strict one-to-one relationship between issues in the trackers and branches in the adjoining source control repositories. When an Engineer is assigned an issue for implementation, the first thing they should do is create a new "issue branch" from the shared "development branch".</p>
+
+        <p>The Engineer assigned to the issue should thenceforth be the solo committer to the corresponding issue branch. This is where the required changes will be first committed. If the issue's assignee changes, the ownership of the corresponding issue branch changes, too. This is how development effort can be passed between different Engineers. This makes it easy to see who is working on what at any one time; it's just a matter of filtering the list of open issues in the issue tracker.</p>
+
+        <p>If we follow these rules, each discrete change to each software component should end up being represented by:</p>
+
+        <ul>
+          <li>One issue in that application's issue tracker.</li>
+          <li>One temporary issue branch in the application's source repository.</li>
+          <li>One pull/merge request from the issue branch to the main development branch.</li>
+          <li>One entry in the application's CHANGELOG.</li>
+        </ul>
+
+        TODO: Tagging and milestone policy ... Our issue trackers are configured with templates for different kinds of issue: bug fixes, feature development, quality improvements (refactoring), etc.
+
+        -->
+
+        <h3 id="cloning">Cloning</h3>
+
+        <!--
+
+        <p>Although Git is a decentralised source control system, our source control workflow is a centralised one. It requires a single, central repository for each software component. This is called the **upstream repository**. We use [GitLab](//gitlab.com/hacksinc) to host all our upstream repositories.</p>
+
+        <p>We implement changes to our software in copies of the upstream code repositories, which are downloaded ("cloned") to the local computer filesystems of individual [Engineers](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/roles/engineer.md). These clones are called **local repositories**.</p>
+
+        <p>Each Engineer gets their own local instances of the upstream repositories.</p>
+
+        <p>Every change will be first committed to a local repository, before being pushed to the corresponding upstream repository.</p>
+
+        <p>Most code repositories will include configuration to provision appropriate local development environments for the application encapsulated by the repository. These isolated development environments allow multiple Engineers to work in parallel and independently of one another.</p>
+
+        -->
+
+        <h3 id="branching">Branching</h3>
+
+        <!--
+
+        <p>SrcFlow uses four types of branch: issue, development, testing and stable.</p>
+
+        <figure>
+          <figcaption>Branch types</figcaption>
+          <table>
+            <thead>
+              <tr>
+                <th>Branch type</th>
+                <th>Naming convention</th>
+                <th>Role</th>
+                <th>Ownership</th>
+                <th>Lifespan</th>
+                <th>Mutable?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Issue</b></td>
+                <td><code>[v]/issue/[number]-[description]</code></td>
+                <td>Feature development, bug fixes</td>
+                <td>Individual</td>
+                <td>Temporary</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><b>Development</b></td>
+                <td><code>[v]/dev</code></td>
+                <td>Integration</td>
+                <td>Team</td>
+                <td>Permanent</td>
+                <td>No</td>
+              </tr>
+              <tr>
+                <td><b>Testing</b></td>
+                <td><code>[v]/alpha</code>, <code>[v]/beta</code>, <code>[v]/rc</code></td>
+                <td>Quality assurance</td>
+                <td>Team</td>
+                <td>Permanent</td>
+                <td>No</td>
+              </tr>
+              <tr>
+                <td><b>Stable</b></td>
+                <td><code>[v]/stable</code></td>
+                <td>Stable builds</td>
+                <td>Team</td>
+                <td>Permanent</td>
+                <td>No</td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+
+        <p>Changes to the interfaces, configuration and behaviour of software components are first committed to temporary <b>issue branches</b>. Each issue branch maps to exactly on issue on the tracker adjoining that component's upstream repository.</p>
+
+        <p>When one or more changes are ready for inclusion in the next release of the software, the changes are integrated together in the <b>development branch</b>. The changes then pass through multiple levels of testing before being confirmed as stable. From there, new versions of the software are packaged and distributed to production systems.</p>
+
+        <p>Source control workflows are often explained using railway metaphors. In the SrcFlow workflow, the development, testing and stable branches represent a project <b>main line tracks</b>. These tracks have an infinite lifetime and their commit history is immutable. The issue branches are <b>side branches</b>. There are many of these, and they are each temporary and dynamic. They flow <em>into</em> the main line tracks.</p>
+
+        <p>An important constraint of SrcFlow is that all changes introduced to a code repository MUST be committed first to an issue branch or the development branch. Changes MUST NOT be introduced further downstream in the testing or — heaven forbid! — the stable branches. There's no equivalent concept to hotfixes in SrcFlow. The purpose of this constraint is to eliminate to "merge backwards" changes that are patched directly in production environments, and to have to deal with all the messiness and brittleness associated with that practice.</p>
+
+        <p>You'll notice that SrcFlow's branches model the phases of the software development life cycle. As a feature or fix progresses through the stages of development and release, the associated changes in the source code flow through the equivalent branches. THere's one branch dedicated to each step of the process. There's no <code>master</code> or <code>main</code> branch because these names do not correlate to anything in the real world of software engineering.</p>
+
+        <h4>Issue branches</h4>
+
+        <p>Issue branches are the semantic equivalent of "feature" or "topic" branches seen in other source control workflows. SrcFlow's issue branches are where new features are first implemented, and where bugs get fixed.</p>
+
+        <p>In SrcFlow, each issue branch MUST map to exactly one issue in the tracker attached to the corresponding upstream repository. The naming convention for issue branches is designed to enforce this strong coupling between code repositories and issue tracking systems.</p>
+
+        <figure>
+          <pre>[v]/issue/[number]-[description]</pre>
+        </figure>
+
+        <ul>
+          <li><code>[v]</code> is either the word "latest" or a legacy major version number: "v1", "v2", "v3" etc.</li>
+          <li><code>[number]</code> is the number of the corresponding issue in the tracker attached to the upstream repository.</li>
+          <li><code>[description]</code> is a short description of the issue, encoded as a hyphen-delimited URI slug.</li>
+        </ul>
+
+        <p>Examples:</p>
+
+        <ul>
+          <li><code>latest/issue/15-color-functions</code></li>
+          <li><code>latest/issue/21-copyright-annotations</code></li>
+          <li><code>v1/issue/23-scss-parse-error</code></li>
+        </ul>
+
+        <p>Because each issue SHOULD be centred on one discrete, atomic change, it follows that issue branches will be focused on specific problems to solve in the software.</p>
+
+        <p>Each issue branch is "owned" by no more than one [Engineer] at a time. This is the person assigned to the issue in the issue tracking system. Only the assigned Engineer may commint changes to an issue branch in the upstream repository. Where peer programming is practices, the more senior of the two Engineers should be the named committer.</p>
+
+        <p>Isssue branches should be as short-lived as possible. Best practice is to err on the side of continuous integration rather than long-running feature development. Integrating changes regularly helps to avoid messy, complicated merges down the road. In the case of development of major new features, Engineers are encouraged to use advanced techniques such as feature toggles to allow their work-in-progress to be regularly integrated into the main line tracks.</p>
+
+        <p>When work on an issue is complete, a pull/merge request (PR) is made from the issue branch (the <em>source</em> branch) to the development branch (the <em>target</em> branch) for the same major version number. The PR is assigned to a [Tech Lead], who subsequently takes "ownership" of the corresponding issue branch.</p>
+
+        <h4>Development branches</h4>
+
+        <p>Development branches are the first of the main line tracks that travel in the direction of release to production systems. Development branches have the following naming convention, where <code>[v]</code> is either the word "latest" or a legacy major version number: "v1", "v2", "v3" etc.</p>
+
+        <figure>
+          <pre>[v]/dev</pre>
+        </figure>
+
+        <p>Examples:</p>
+
+        <ul>
+          <li><code>latest/dev</code></li>
+          <li><code>v2/dev</code></li>
+          <li><code>v1/dev</code></li>
+        </ul>
+
+        <p>The <code>latest/dev</code> branch is configured as the default branch in the upstream repository. This is a point of differentiation with most other Git-based source control workflows, where the production or stable branch — usually called <code>master</code> or <code>main</code> — tends to be set as the default branch. The reason we use <code>latest/dev</code> rather than <code>latest/stable</code> as our default branch is because it is to this branch that the majority of pull/merge requests will be made.</p>
+
+        <p>(It is worth noting here that the Git source control system itself has no concept of a default branch, but DevOps services such as GitLab extend Git with configurations for default branches, as well as access controls and other features.)</p>
+
+        <p>While all functional changes to a software component should be initiated by opening an issue, it is acceptable for [Tech Leads] to commit non-functional changes directly to development branches. Non-functional changes include edits to documentation, changes to test cases, and minor reformatting of source code. Only the [Tech Leads] SHOULD have the necessary [access rights] to commit changes directly to the development branches. Other [Engineers] SHOULD use the pull/merge request system.</p>
+
+        <p>The development branches can be thought of as "integration branches". This is where changes introduced via the issue branches get integrated together and brought onto a project's main line towards release. Another way to think about the development branches is that the contents of their <code>HEAD</code> represent the current [pre-alpha state] of each major version number.</p>
+
+        <p>When work on an issue is complete, a pull/merge request (PR) is made from the issue branch (the <em>source</em> branch) to the development branch (the <em>target</em> branch) for the same major version number. The PR is assigned to a [Tech Lead], who subsequently takes "ownership" of the corresponding issue branch.</p>
+
+        <p>Tech Leads thus have the freedom to cherry pick — from open PRs assigned to them — the changes they want to include in the next release. Thus, commits are added to development branches — either directly or via [merging] — only when those changes are planned for inclusion in the next release of the software.</p>
+
+        <p>The commit history of the upstream development branches is immutable. Commits MUST NOT be <code>git reset</code> once added to these branches. However, if mistakes are made, they can be reverted (using <code>git revert</code>, which introduces new commits rather than deleting previous commits). In other words, the chronology of commits on development branches should never change. It can only be extended forward.</p>
+
+        <hr />
+
+        <p>Changes are committed directly, or merged into, the <code>latest/dev</code> branch only when those changes are planned for inclusion in the next release of the software. Some testing and other quality checks will have already been undertaken by Engineers — working from their [issue branches](https://gitlab.com/radius-analytics/technical-documentation/-/blob/main/operations/source-control/strategies/branching/issue-branches.md) — before their code reaches this stage.</p>
+
+        <p>[Engineers] are entrusted to cover their code with automated tests at the unit, integration and system levels, as much as they need to be confident that their code is correct. As part of code review procedures, Tech Leads should review these tests and may choose to extend test coverage themselves, or request the [Engineers] to do so.</p>
+
+        <p>[Tech Leads] are responsible for peer reviewing all commits as-and-when they are integrated into <code>latest/dev</code>. As much as possible, static analysis should be automated. Continuous integration pipelines should be configured to run off commits and merges to the <code>latest/dev</code> branch, and to automatically run linting and any other static code checks that can be done programmatically.</p>
+
+        <h4>Test branches</h4>
+
+        <p>The <b>alpha</b>, <b>beta</b>, and <b>rc</b> (release candidate) branches — collectively known as the <b>test</b> branches — are where integrated changes pass through a series of testing and quality control procedures prior to their release to production systems.</p>
+
+        <p>Each of these branches represents a different stage of the [software release cycle]. For the latest major version number of the software, the test branches will be:</p>
+
+        <ul>
+          <li><code>latest/alpha</code></li>
+          <li><code>latest/beta</code></li>
+          <li><code>latest/rc</code></li>
+        </ul>
+
+        <p>If legacy releases also enjoy long-term support, there will be additional test pipelines for each of those releases. Example:</p>
+
+        <ul>
+          <li><code>v1/alpha</code></li>
+          <li><code>v1/beta</code></li>
+          <li><code>v1/rc</code></li>
+          <li><code>v2/alpha</code></li>
+          <li><code>v2/beta</code></li>
+          <li><code>v2/rc</code></li>
+        </ul>
+
+        <p>As with development branches, the commit history of the test branches is immutable. Commits MUST NOT be <code>git reset</code> once added to these branches. And, anyway, commits MUST NOT be made directly to any of the test branches, but rather they MUST always originate in an issue branch or development branch. The purpose of this constraint is to avoid the necessity to backport downstream changes, which can mess up the commit chronology, produce merge conflicts, and generally introduce brittleness to the whole software engineering process.</p>
+
+        <h4>Alpha branches</h4>
+
+        <p>The <code>HEAD</code> of the <b>alpha branches</b> represents the latest increment of each major version that is at the alpha testing stage. Alpha builds may not include all the features intended to be included in the next release of the software, but [Testers] can at least start the process of verifying that the work-in-progress is on the right track, conforming to requirements and not introducing unexpected regressions in behaviour or quality.</p>
+
+        <p>Alpha branches may be unstable. This may happen, for instance, if there are conflicts between multiple merged changes. Tech Leads may directly commit changes to development branches (then rebase the alpha branch on the corresponding development branch) to resolve these conflicts.</p>
+
+        <p>[Tech Leads] handover changes to the [Testers] by [rebasing] the alpha branch on the development branch for the same major version. Ideally, continuous delivery pipelines should be configured to automatically recompile the software and deploy to [alpha testing environments].</p>
+
+        <p>The alpha testing phase ends with a feature freeze. The Tech Leads inform the Testers that no further features will be added to the software before its next release. At this stage, the <code>[v]/alpha</code> branch includes all the changes planned for inclusion in the next release.</p>
+
+        <h4>Beta branches</h4>
+
+        <p>With the next release "feature complete", the <code>latest/beta</code> branch is rebased on <code>latest/alpha</code>, so syncing the two branches with all the features planned for inclusion in the next release. Continuous integration SHOULD be configured to automatically recompile the software and deploy to [beta testing environments].</p>
+
+        <p>Now, [Testers] undertake comprehensive testing for completeness. This stage is all about testing the system <em>as a whole</em> — ie system testing, also known as end-to-end or functional testing. The focus here is on reducing the impact of the changes on users. Of particular concern to Testers will be matters such as usability, privacy, data integrity, performance, and so on.</p>
+
+        <p>Testers may report bugs, which will be prioritised for resolution via the normal issue tracking system. Therefore, further changes may flow through the development and alpha testing phases to fix bugs discovered in beta testing. Alternatively, the Tech Leads may consider some bugs or regressions, reported by the Testers, to be acceptable, and bump them for resolution in the release-after-next.</p>
+
+        <h4>RC branches</h4>
+
+        <p>When a beta build has passed all QA checks, the changes are merged — again, using the Git's <code>rebase</code> strategy — into the <code>latest/rc</code> branch and deployed to a production-like environment where the [Product Owner] MAY undertake final user acceptance testing (UAT).</p>
+
+        <p>The RC branches can be thought of as pre-production branches. The <code>HEAD</code> of the RC branches represents the most recent release candidate for each version pipeline.</p>
+
+        <p>The primary purpose of this final stage of testing is for the Product Owner to verify that the changes introduced meet the <em>functional</em> requirements they specified at the beginning of the process. The Product Owner is primarily concerned with whether the implementation meets the original business requirements and objectives.</p>
+
+        <p>As long as the requirements have been fully understood by all parties, it should rarely be necessary to introduce further changes at this late stage of the release cycle. A release candidate, also known as "going silver", is a beta version with potential to be a stable product. The Tech Leads and Testers would consider this stage to be "code complete". Not even changes to documentation, tests and other peripheral materials are expected to need changing before the next formal release of the software.</p>
+
+        <p>However, it is possible the Product Owner may request further changes or improvements in the implementation, so resetting the process back to the [first phase] and holding up the release. <b>Feature creep</b> is a perfectly normal — even desirable — characteristic of software engineering practice. The experience of using known requirements in working software often reveals new insights and new requirements. The important thing is that evolving requirements are handled properly, using the normal workflow. New issues are raised, and the process resets for a new <b>iteration</b>.</p>
+
+        <h4>Stable branches</h4>
+
+        <p>When an RC build is approved by the Product Owners, the changes are merged into the <code>[v]/stable</code> branch and a new version number is tagged on that branch. The <code>CHANGELOG</code> is updated to reflect the date this version was completed.</p>
+
+        <p>In our workflow, the <code>latest/stable</code> branch is the nearest equivalent to the <code>master</code> or <code>main</code> branches seen in other Git workflows.</p>
+
+        <p>The aim is for the <code>HEAD</code> of all the <code>[v]/stable</code> branches to be in a working, deployable state — ie a <b>stable version</b>. The stable branches are dedicated to taking code that is production-grade. However, it is not a requirement that all stable builds be release to production environments — ie becoming a <b>production release</b>, aka general release. Tech Leads are free to cherry pick which stable version become production releases.</p>
+
+        <p>As with the other main line tracks, changes must never be committed directly to the stable branches, and the commit history of these branches must be treated as immutable. This is especially important in the stable branches. Committing directly here will circumvent all the usual QA checks.</p>
+
+        --->
+
+        <!--
+
+        <h4>Version pipelines</h4>
+
+        <p>Optionally, SrcFlow's branching convention can be extended to support the parallel maintenance of multiple software versions. Version pipelines make it possible to implement long-term support (LTS) release strategies, for example.</p>
+
+        <p>By default, all our branches are prefixed <code>latest/</code>. The latest branches capture work undertaken on the current highest [major version number] of the software.</p>
+
+        <p>Thus a source code repository modelled for our workflow would have the following branches as a minimum:</p>
+
+        <ul>
+          <li><code>latest/dev</code></li>
+          <li><code>latest/alpha</code></li>
+          <li><code>latest/beta</code></li>
+          <li><code>latest/rc</code></li>
+          <li><code>latest/stable</code></li>
+        </ul>
+
+        <p>In addition, at any one time there will likely be several <code>latest/issue/**</code> branches, via which new features will be implemented, and bugs fixed, for the current major release.</p>
+
+        <p>This naming convention allows our workflow to scale to support maintenance of multiple legacy releases in parallel to the main development effort on the latest release. Long-term support (LTS) releases are not required for every software application, but where they are they will each have their own source control pipeline. Instead of the <code>latest/</code> prefix, LTS tracks are prefixed with the actual major version number they represent: <code>v1</code>, <code>v2</code>, <code>v3</code>, etc.</p>
+
+        <p>For example, if the latest major version number is v2, ongoing development of that version will be undertaken via the <code>latest/**</code> main line tracks. Meanwhile, patches for the legacy v1 release can be managed using an identical workflow but with changes flowing through the following branches instead:</p>
+
+        <ul>
+          <li><code>v1/issue/**</code></li>
+          <li><code>v1/dev</code></li>
+          <li><code>v1/alpha</code></li>
+          <li><code>v1/beta</code></li>
+          <li><code>v1/rc</code></li>
+          <li><code>v1/stable</code></li>
+        </ul>
+
+        <p>Much of today's "continuously delivered" software requires only a single delivery pipeline. In this case, only <code>latest/**</code> branches are needed. Even so, there will always be use cases for LTS policies, and therefore it is recommended to preserve the <code>latest/</code> prefix for consistency across all code repositories.</p>
+
+        -->
+
+        <h3 id="access-controls">Access controls</h3>
+
+        <!--
+
+        <p>If you're hosting your own remote source control repositories, you have a couple of options. Gitolite is an access control layer o top of Git. Alternatively, you can use GitLab Community Edition, which provides a complete suite of development operations tools with Git at the centre of things. Both applications run on Unix-like servers.</p>
+
+        <p>In order to enforce quality controls in our source control workflow, not everyone gets full read-write access to every branch in the upstream repositories.</p>
+
+        <p>The Git source control system itself does not provide branch-specific access controls, known as <b>protected branches</b>. But all good Git repository hosting services — GitHub, GitLab, Bitbucket, <i>et al</i> — do provide this functionality via their server-side authorisation layer.</p>
+
+        <p>We apply GitLab's access controls to all the main line tracks — the <code>[v]/dev</code>, <code>[v]/test</code> and <code>[v]/stable</code> branches. Only Tech Leads, who are given GitLab's "maintainer" role, have read-write privileges on these branches. Everyone else needs only to be able to push to <code>[v]/issue/**</code> branches, and will use the pull/merge request system to have their work brought into the main line tracks.</p>
+
+        -->
+
+        <h3 id="environments">Environments</h3>
+
+        <!--
+
+        <p>The [implementation](//gitlab.com/hacksinc/technical-documentation/-/tree/main/operations/process/implementation.md) and [testing](//gitlab.com/hacksinc/technical-documentation/-/tree/main/operations/process/testing.md) of software changes is undertaken in specialist host environments that simulate aspects of the our production systems, while being fully isolated from those systems.</p>
+
+        <p>Each environment fulfils a specific role within the software [development](//gitlab.com/hacksinc/technical-documentation/-/tree/main/operations/process/implementation.md) and [release life cycle](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/process/testing.md), and each environment maps to a [specific branch](//gitlab.com/hacksinc/technical-documentation/-/tree/main/operations/source-control/strategies/branching) in the software's code repository.</p>
+
+        <h3 id="development">Development</h3>
+
+        <p>Changes to software are first introduced in local development environments. Each [Engineer](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/roles/engineer.md) has their own.</p>
+
+        <p>Changes to our software are first introduced in local development environments. These environments usually take the form of virtual machines that are run on the personal workstations of [Engineers](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/roles/engineer.md). Thus, each Engineer gets their own development VM instance, fully isolated from everyone else's, so allowing Engineers to work in parallel and independently of one another.</p>
+
+        <p>The code repositories for all the components of our software should include configuration to automate the provisioning of suitable local development environments. Where Engineers work across multiple software components, they will have a separate development environment for each component. That's because production environments differ between software components, and thus development environments — which should closely model the production environments — must differ too.</p>
+
+        <p>This means multiple VM configurations need to be maintained, but the advantage is it's easier to optimise different host environments for specific applications.</p>
+
+        <p>Typically, the application code in local development environments will have been checked out from the `latest/dev` [branch](//gitlab.com/hacksinc/technical-documentation/-/tree/main/operations/source-control/strategies/branching) or one of the `latest/issue/*` branches. In addition, a centralised continuous integration system will usually verify that various automated processes — compilation and packaging steps, and any automated test scripts — are successfully running and passing whenever new commits are introduced to the `latest/dev` branch.</p>
+
+        <h3 id="alpha">Alpha</h3>
+
+        <p>Alpha testing environments are used by [Testers](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/roles/tester.md) to monitor and evaluate work-in-progress.</p>
+
+        <p>Alpha testing environments are built automatically from the `latest/alpha` branches. These environments are used by [Testers](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/roles/tester.md) to monitor and evaluate work-in-progress.</p>
+
+        <p>The purpose of alpha testing is to provide feedback to Engineers on changes that are planned for inclusion in the next release of the software, at an early stage of the [release cycle](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/process/testing.md) when the release is not yet "feature complete" and the software may be buggy and unstable.</p>
+
+        <h3 id="beta">Beta</h3>
+
+        <p>Beta testing environments are used by [Testers](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/roles/tester.md) to verify the integration of _all_ features that are proposed to be included in the next release of a software component.</p>
+
+        <p>Beta testing environments are built automatically from the `latest/beta` branches and are used by Testers to verify the integration of all features that are proposed to be included in the next release of the software.</p>
+
+        <p>This stage of testing is all about testing the solution _as a whole_, ie system testing, also known as end-to-end or functional testing.</p>
+
+        <h3 id="uat">UAT</h3>
+
+        <p>Release candidates (RCs) are built and deployed to pre-production environments from where the [Product Owner](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/roles/product-owner.md) can undertake user acceptance testing (UAT). This final stage of the testing process is about verifying that a software update meets the original business requirements.</p>
+
+        <p>When the Testers are happy that a beta build is passing all QA checks, a release candidate is prepared, committed to the `latest/rc` branch, and deployed to a dedicated environment for user acceptance testing (UAT).</p>
+
+        <p>This environment is where the [Product Owner](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/roles/product-owner.md) can test the system against the original business requirements which they defined at the [start of the process](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/process/analysis.md).</p>
+
+        <h3 id="production">Production</h3>
+
+        <p>Ultimately, some stable builds will be distributed to production environments. Target production systems vary depending on the nature of the software under development (eg libraries versus applications).</p>
+
+        <p>When a software update passes UAT, the version number is bumped and tagged on the `latest/stable` branch. Optionally, a stable release may be prepared and distributed to production environments.</p>
+
+        <p>Production environments vary wildly from one software component to another. Some software components will be shipped to "live" production servers, others to desktops and mobile devices (perhaps via central app stores), while still others will be deployed to various package repositories.</p>
+
+        <p>Wherever possible, we will strive to automate the deployment of software updates to the target host systems.</p>
+
+        -->
+
+        <h3 id="integration">Integration</h3>
+
+        <p>Git supports two methods for taking changes committed to one branch (a <em>source</em> branch) and integrating those changes into another branch (a <em>target</em> branch):</p>
+
+        <ul class="RichText--narrow">
+          <li>Merging</li>
+          <li>Rebasing</li>
+        </ul>
+
+        <p><b>Merging</b> is the simplest and the most commonly used. It is Git's default integration methodology. When a source branch is merged into a target branch, if there is no divergent work in the target branch, by default Git will try to "fast-forward" the target branch to the tip of the source branch. A fast-forwarded merge is not explicitly recorded (there's no "merge commit"). If the source branch is later deleted, there remains only a clean, chronological history of commits, and no reference to the deleted source branch is persisted.
+
+        <figure>
+          <img alt="This animation demonstrates a merge with the fast-forward method. Commits 'a' and 'b' are on the 'dev' branch. From commit 'b' a new 'issue' branch is created. Commits 'c', 'd' and 'e' are added to the 'issue' branch. When the changes in the 'issue' branch are merged back into the 'dev' branch, the tip of the 'dev' branch is simply fast-forwarded from commit 'b' to commit 'e'. Now, both the 'dev' and 'issue' branches are at commit 'e' and have identical commit histories. There's no explicit merge commit, so if the 'issue' branch is now deleted there would be no record of that branch in Git's log." src="/assets/animations/merge-ff.gif?v=20210708T1400" width="400" height="240" />
+          <figcaption>Merge with fast-forward</figcaption>
+        </figure>
+
+        <p>However, in busy projects, it is more common for there to be new commits added to the target branch since the source branch diverged from it. In this situation, Git will not be able to use the fast-forward method. Instead, it will record an explicit merge commit on the target branch. The merge commit will reference the commit history of its two parent branches, and it will record any additional changes that were needed to resolve conflicts arising from the divergent commit history of the two.</p>
+
+        <figure>
+          <img alt="This animation demonstrates a merge with the no-fast-forward method. Commits 'a' and 'b' are on the 'dev' branch. From commit 'b' a new 'issue' branch is created. Commits 'c', 'd' and 'e' are added to the 'issue' branch, and commits 'f' and 'g' are added to the 'dev' branch. This time, when changes in the 'issue' branch are merged back into the 'dev' branch, because there are changes in the target 'dev' branch that the source 'issue' branch does not have, the 'dev' branch cannot simply be fast-forwarded to the same commit at the tip of the 'issue' branch. Instead, an explicit merge commit is added to the 'dev' branch which resolves the integration between the two branches." src="/assets/animations/merge-no-ff.gif?v=20210708T1400" width="440" height="240" />
+          <figcaption>Merge with no-fast-forward</figcaption>
+        </figure>
+
+        <p>The merge integration method is simple to understand. It is intuitive. It preserves the history of commits in their true chronological order, and with the no-fast-forward method it also preserves the context in which changes were integrated (by recording the names of source branches in merge commits).</p>
+
+        <p>However, merging can produce rather noisy, non-linear commit histories. The busier the project, the more the history of the main line tracks become muddied with merge conflicts. Merge commits don't tell us <em>what</em> changed in the source code, they exist only to tell us <em>how</em> changes were integrated. This is detail that is not relevant to the software under construction.</p>
+
+        <p><b>Rebasing</b> is more complex, but the end result is a cleaner, linear commit history, and merge conflicts are greatly reduced. It is for these reasons that SrcFlow suggests using the rebasing integration method.</p>
+
+        <p>It works like this. At the time of a merge, the unique commits on the source branch are temporarily undone, until Git hits a common base commit that exists in the history of both the source and target branches. Git then fast-forwards the source branch to the tip of the target branch, thus incorporating into the source branch any recent commits that were added to the target branch since the source branch diverged from it. Next, the commits that were undone are reapplied to the source branch. The changes are reintroduced as entirely new commits.</p>
+
+        <p>In effect, the commits that are unique to the source branch are given a new base from which they build — hence the term "rebasing".</p>
+
+        <figure>
+          <img alt="This animation demonstrates a merge with the rebase method. Commits 'a' and 'b' are on the 'dev' branch. From commit 'b' a new 'issue' branch is created. Commits 'c', 'd' and 'e' are added to the 'issue' branch, and commits 'f' and 'g' are added to the 'dev' branch. This time, when the changes in the 'issue' branch are merged back into the 'dev' branch using the rebase method, commits 'c', 'd' and 'e' are temporarily undone on the 'issue' branch, then the tip of the 'issue' branch is fast-forwarded to the tip of the 'dev' branch, which is commit 'g'. The commits removed from the 'issue' branch are now reapplied to that branch as brand new commits, 'h', 'i' and 'j', building on top of commit 'g' as their new base. The end result is similar to a fast-forward merge: both the 'dev' and 'issue' branches are at commit 'j' and have identical commit histories. There's no explicit merge commit, so if the 'issue' branch is now deleted there would be no record of that branch in Git's log." src="/assets/animations/rebase.gif?v=20210708T1400" width="580" height="240" />
+          <figcaption>Rebase</figcaption>
+        </figure>
+
+        <p>If conflicts arise during the rebasing process, the new commits added to the source branch are modified to keep their changes compatible with the new base from which they build. With divergence between the two branches resolved, the target branch can be fast-forwarded to the tip of the source branch, so capturing all the changes in the source branch. The merge is not explicitly recorded. If the source branch is later deleted, no reference to the deleted branch will be persisted in the commit history and all that remains is a linear history of changes, recorded as though all work was implemented directly on the main branch.</p>
+
+        <p>Rebasing with fast-forward merges is the integration methodology used in the SrcFlow branching-and-merging strategy. All commits on the main line represent only source changes and are not polluted with branching-and-merging noise. In SrcFlow, the (often messy) branching history is absent from the commit history, but not forgotten entirely. Our workflow records _how_ changes were implemented via the issue tracker, instead. The downside of this rebasing methodology is that there is less traceability, it is harder to see how changes were implemented and how merge conflicts were resolved (these things are not recorded for posterity). SrcFlow resolves the issue of traceability by linking commits directly to issues in the issue tracker, and conflicts are avoided by assigning each issue branch to a single developer.</p>
+
+        <!-
+
+        <hr />
+
+        <p>Rebasing is more work, because you're not delegating merge conflicts to Git to resolve. But it is more dependable and produces a nice clean diff at the point of integration, speeding up development velocity of the overall team (sacrificing a little individual velocity).</p>
+
+        <p>You can make rebasing the default strategy for all merges. Run the following commands to change Git's global configuration on your own computer:</p>
+
+        <figure><pre>
+<!--   -->$ git config --global merge.ff only
+<!--   -->$ git config --global pull.rebase true<!--
+     --></pre></figure>
+
+        <p>The second command sets the rebase strategy as the default for the `git pull` operation (which is a shortcut for `git fetch && git merge`. With this setting, you can omit the `--rebase` option from `git pull` commands.</p>
+
+        <p>You also need to set `git merge` to use only the fast-forward-only strategy.</p>
+
+        <h3 id="committing">Committing</h3>
+
+        <!--
+
+        <p>Because [each issue will be centred on one discrete, atomic change](https://gitlab.com/radius-analytics/technical-documentation/-/blob/main/operations/source-control/strategies/issue-tracking.md), it follows that issue branches will be focused on specific problems to solve in the software. Even so, those narrowly-scoped issues should be broken down into a series of atomic implementation steps, which are represented by commits.</p>
+
+        <p>Modifications to source code should be accompanied by relevant changes to documentation, automated test scripts and other supporting materials in the same commits. The _quality_ of an implementation — its level of engineering excellence, and the breadth and depth of documentation, tests and other supporting materials — is a decision delegated to the individual Engineers assigned to the implementation. But these decisions should be guided by the quality constraints defined in the [design documents](https://gitlab.com/radius-analytics/technical-documentation/-/blob/main/operations/process/design.md) and the [System Requirements Specification](https://gitlab.com/radius-analytics/specifications).</p>
+
+        <p>Note, the commit history of issue branches CAN be mutated.</p>
+
+        -->
+
+        <h3 id="versioning">Versioning</h3>
+
+        <!--
+
+        <p>SrcFlow RECOMMENDS use of the <a rel="external" href="https://semver.org/">Semantic Versioning</a> standard. The format for semantic version number is:</p>
+
+        <figure>
+          <pre>[major].[minor].[patch]</pre>
+        </figure>
+
+        <ul>
+          <li><code>[major]</code> is the major version number. This MUST be bumped whenever changes to a software component's API breaks backwards compatibility.</li>
+          <li><code>[minor]</code> is the minor version number. This MUST be bumped whenever new functionality is added in a backwards-compatible manner.</li>
+          <li><code>[patch]</code> is the patch number. This SHOULD be bumped whenever code is refactored, or whenever supporting materials such as tests and documentation are improved, without altering the public interface or the internal behaviour of the software component (except to fix bugs).</li>
+        </ul>
+
+        <p>The following is a representative chronology of semantic version number progressions:</p>
+
+        <ol>
+          <li><code>v1.0.0</code></li>
+          <li><code>v1.1.0</code></li>
+          <li><code>v1.2.0</code></li>
+          <li><code>v1.2.1</code></li>
+          <li><code>v2.0.0</code></li>
+          <li><code>v2.0.1</code></li>
+          <li><code>v2.0.2</code></li>
+          <li><code>v2.1.0</code></li>
+        </ol>
+
+        <h4>Version zero and pre-releases</h4>
+
+        <p><code>v0.x.x</code> releases MAY NOT comply with the Semantic Versioning rules. "Version zero" pipelines are used for "preview" or "prototype" builds, and these releases are considered to be unstable and not production-grade. Breaking changes can be introduced to "version zero" releases without bumping the major version number.</p>
+
+        <p>The Semantic Versioning standard does not cover pre-releases. Pre-release numbering conventions vary. For example, the <em>de facto</em> standard for pre-release numbering in JavaScript packages is:</p>
+
+        <figure>
+          <pre>v[major].[minor].[patch]-[stage].[inc]</pre>
+        </figure>
+
+        <ul>
+          <li><code>[stage]</code> is the word "alpha" or "beta".</li>
+          <li><code>[inc]</code> is the increment number of the alpha or beta release of the given semantic version.</li>
+        </ul>
+
+        <p>Examples:</p>
+
+        <ul>
+          <li><code>v1.0.0-alpha.0</code></li>
+          <li><code>v1.0.0-alpha.1</code></li>
+          <li><code>v1.0.0-alpha.2</code></li>
+          <li><code>v1.0.0-beta.0</code></li>
+          <li><code>v1.0.0-beta.1</code></li>
+          <li><code>v1.0.0</code></li>
+          <li><code>v1.1.0-alpha.0</code></li>
+          <li><code>v1.1.0-beta.0</code></li>
+          <li><code>v1.1.0</code></li>
+        </ul>
+
+        -->
+
+        <h3 id="releasing">Releasing</h3>
+
+        <!--
+
+        <p>Most source control hosting systems provide a means of recording formal releases which, as well as taking a snapshot of the source code, can also capture and distribute build output, metadata and other compiled artifacts:</p>
+
+        <ul>
+
+          <li>**GitHub**: From the upstream repository's homepage, go to "Releases" and click "Draft a new release". Select the latest version tag on the <code>latest/prod</code> branch. The release title should match the version number, e.g. "v2.3.11". For the short summary, copy the release notes from the <code>CHANGELOG</code> file. Click "Publish release". GitHub will automatically generate a compressed archive of the source code, but you can also manually attach binaries and other compiled objects to the release. You can automate this process using GitHub's [Releases API](https://developer.github.com/v3/repos/releases/).</li>
+
+          <li>**GitLab**: GitLab does not provide a GUI to record formal releases, but this can be done via GitLab's [Releases API](https://gitlab.com/help/api/releases/index.md).</li>
+
+          <li>**Bitbucket**: [BitBucket Pipelines](https://bitbucket.org/product/features/pipelines) can be used to generate and deploy builds to [Bitbucket Downloads](https://confluence.atlassian.com/bitbucket/deploy-build-artifacts-to-bitbucket-downloads-872124574.html).</li>
+
+        </ul>
+
+        -->
+
+      </div>
+    </section>
+
+    <section class="SPEC/SECTION">
+      <div class="RichText">
+
+        <h2 id="process">Process</h2>
+
+        <!--<p>The following process is for a single source code repository. SrcFlow has no opinion about mono vs multi repo strategies.</p>-->
+
+        <h3 id="provision">Provision</h3>
+
+        <!--
+
+        <p>Although Git is a decentralised source control system, SrcFlow is a centralised workflow. For each software component under development, there MUST be a single Git repository, hosted on a central server that is accessible by all contributing developers, which acts as the "source of truth" for the project. This is call the <b>upstream repository</b>.
+
+Although Git is a decentralised source control system, our source control workflow is a centralised one. It requires a single, central repository for each software component. This is called the upstream repository.
+
+We use [GitLab](//gitlab.com/hacksinc) to host all our upstream repositories. Follow the steps below to provision new code repositories within our GitLab account. These steps MUST be carried out by [Tech Leads](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/roles/tech-lead.md), who are assigned the "maintainer" role in GitLab and therefore have the necessary permissions to do this.
+
+1.  #### Create the upstream repository
+
+    Create a new project within the [Radius Analytics organisation on GitLab](//gitlab.com/hacksinc).
+
+2.  #### Clone the upstream repository
+
+    Clone the upstream repository on your local machine. It is recommended you use the SSH protocol.
+
+    ```bash
+    $ git clone git@gitlab.com:hacksinc/[path-to]/[project].git
+    ```
+
+    Alternatively, create an empty directory on your computer, change to that empty directory, and then initialise a blank Git repository within it.
+
+    ```bash
+    $ mkdir [project]
+    $ cd [project]
+    $ git init
+    ```
+
+    When you directly `git clone` an upstream repository, Git assigns the identifier "origin" to reference the upstream repository from where the clone originated. This doesn't happen when you initialise a Git repository from scratch, so you must run the following command to manually configure the location of the upstream repository.
+
+    ```bash
+    $ git remote add origin git@gitlab.com:hacksinc/[path-to]/[project].git
+    ```
+
+3.  #### Add a README
+
+    Before setting up branches, you must have some files to commit. Start by creating the project's README.
+
+    ```bash
+    $ cd [project]
+    $ touch README.md
+    $ echo "# [Project Title]" >> README.md
+    ```
+
+    Now stage it.
+
+    ```bash
+    $ git add README.md
+    ```
+
+4.  #### Commit the README
+
+    Commit the README file. Write "Initial commit" for the title of the first commit to the new code repository.
+
+    ```bash
+    $ git commit -m "Initial commit"
+    ```
+
+5.  #### Create the development branch
+
+    When you committed the README file, Git would have created a default branch called `master` or `main` (depending on Git's configuration on your local system). We use a [different naming convention](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/source-control/strategies/branching/development-branches.md) for the default branch. Ours is called `latest/dev`. Use the `git branch -m` command to force the current branch to be **m**oved (ie renamed).
+
+    ```bash
+    $ git branch -m latest/dev
+    ```
+
+6.  #### Push the changes upstream
+
+    Push the changes to the upstream "origin" repository. Use the `--set-upstream` option, or its alias `-u`, to have the local `latest/dev` branch track a branch of the same name on the remote.
+
+    ```bash
+    $ git push -u origin latest/dev
+    ```
+
+    Because this will have been the first time anything is pushed to the upstream repository, the `latest/dev` branch will be automatically set at the default branch in GitLab's upstream infrastructure. This is correct. In our workflow, it is this development branch — not the stable production branch, aka "master" or "main" — which is [the default branch](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/source-control/strategies/branching/development-branches.md).
+
+7.  #### Create the test branches
+
+    Create a branch called `latest/beta`.
+
+    ```bash
+    $ git branch latest/beta
+    $ git checkout latest/beta
+    ```
+
+    These two commands can be combined into one:
+
+    ```bash
+    $ git checkout -b latest/beta
+    ```
+
+    Alternatively, from Git v2.23, you can use the new `git switch` command with the `--create` or `-c` option.
+
+    ```bash
+    $ git switch -c latest/beta
+    ```
+
+    Push your local `latest/beta` branch to the upstream repository, with branch tracking enabled.
+
+    ```bash
+    $ git push -u origin latest/beta
+    ```
+
+    Optionally, you can create additional test branches: `latest/alpha` and/or `latest/rc`. The greater the degree of quality assurance controls you want to enforce on software releases, the more software testing phases will be required. [Read up on our five stages of testing](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/process/testing.md).
+
+    ```bash
+    $ git checkout -b latest/alpha
+    $ git push -u origin latest/alpha
+
+    $ git checkout -b latest/rc
+    $ git push -u origin latest/rc
+    ```
+
+8.  #### Create the production branch
+
+    Finally, create the production branch. In our workflow, the production branch is called `latest/stable`.
+
+    ```bash
+    $ git checkout -b latest/stable
+    $ git push -u origin latest/stable
+    ```
+
+    You've now created all the main tracks that the source code will travel on: from `dev` via `alpha`, `beta` and `rc`, and finally to `stable`. Run the following command to see a list of all the branches in your local repository.
+
+    ```bash
+    $ git branch
+    ```
+
+    Add the `--all` or `-a` option to view remote-tracked branches, too.
+
+    ```bash
+    $ git branch -a
+    ```
+
+9.  #### Create a CHANGELOG
+
+    Switch back to the development branch.
+
+    ```bash
+    $ git checkout latest/dev
+    ```
+
+    Commit a file named `CHANGELOG.md` with the following contents.
+
+    ```
+    # Changelog
+
+    #### Unreleased
+    ```
+
+    Continue to prepare your code repository as required. Project manifest files such as `package.json`, configuration files such as `.gitignore` and `.editorconfig`, and other boilerplate content can be committed directly to the `latest/dev` branch.
+
+    When you've finished preparing the code repository, push your changes to the upstream repository's `latest/dev` branch, which your local `latest/dev` branch should now track automatically.
+
+    ```bash
+    $ git push
+    ```
+
+10. #### Protect the main line tracks
+
+    In GitLab, you should put in place appropriate [access controls](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/source-control/strategies/access-controls.md) on all the main line tracks you've just pushed up to the upstream repository. Navigate to the repository in GitLab, then go to **Settings > Repository > Protected Branches**.
+
+    You'll see that GitLab will have automatically applied some protections to the default branch, `latest/dev`. Only users with the "maintainer" role in GitLab will be able to push directly to the `latest/dev` branch in the upstream repository, or to merge into it. No one, not even maintainers, can delete the default branch in the upstream repository, or change its commit history by force-pushing to it.
+
+    You should leave these defaults for `latest/dev` and apply exactly the same constraints to all the other main line tracks: `latest/alpha`, `latest/beta`, `latest/rc` and `latest/stable`.
+
+The new code repository is now ready to accept code [contributions](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/source-control/workflow/contributing.md) from other members of the engineering teams.
+
+
+        -->
+
+        <h3 id="clone">Clone</h3>
+
+        <!--
+
+        <p>For public, open source project, external [contributors] will need to fork the project's upstream repository before proceeding.</p>
+
+        -->
+
+        <h3 id="triage">Triage</h3>
+
+        <!--
+
+        <p>[Tech Leads], in collaboration with [Product Owners], prioritise issues and assign issues to [Engineers] for implementation.</p>
+
+        <p>ALL changes to the software — bug fixes, feature development, and refactoring and general maintenance (such as the update of dependencies) — are initiated and tracked via the project's issue tracking system. Ultimately, all changes will be integrated via merge requests (aka pull requests), and every merge request SHOULD link back to a single open issue.</p>
+
+        -->
+
+        <h3 id="commit">Commit</h3>
+
+        <!--
+
+        <p>The assignment of an issue to an [Engineer] triggers a new development iteration. When an issue is assigned to an [Engineer], is becomes a **change request**, which means the changes have been approved for implementation.</p>
+
+        <p>The assigned [Engineers] will analyse the requirements and design a solution.</p>
+
+        <p>[Tech Leads] will continue to oversee changes though implementation and testing.</p>
+
+[Tech Leads](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/roles/tech-lead.md) — who have the "maintainer" role in GitLab — may commit changes to supporting materials — eg documentation and automated test scripts — directly to the `[v]/dev` branches. But everyone else, and all changes to the operations, behaviour and quality attributes of the software must be initiated by the assignment of issues.
+
+The Tech Leads will assign issues to the [Engineers](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/roles/engineer.md) with the required expertise. This is called issue triage.
+
+When an Engineer has a new issue assigned to them, they should follow the instructions below to introduce the necessary code changes to the relevant repositories. The following instructions assume you're working on the latest major version number, and therefore the branch prefix is `latest/`.
+
+1.  #### Clone the upstream repository
+
+    If you haven't already done so, [clone the upstream repository](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/source-control/strategies/cloning.md) onto your local machine. It is recommended you use the SSH protocol.
+
+    ```bash
+    $ git clone git@gitlab.com:hacksinc/[path-to]/[project].git
+    ```
+
+2.  #### Checkout the development branch
+
+    In your local repository, checkout the `latest/dev` branch for the relevant major version. This branch represents the very latest increment of the software. It may even include new features and bug fixes that are not yet released.
+
+    ```bash
+    $ git checkout latest/dev
+    ```
+
+3.  #### Synchronise your local repository with the upstream repository
+
+    Rebase your local `latest/dev` branch on the upstream repository. This will fetch and merge recent changes introduced by other developers. If you've recently introduced commits to the `latest/dev` branch in your local repository, but not yet pushed those changes upstream, the [rebasing process](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/source-control/strategies/merging.md) will move your local changes on top of what everyone else has recently contributed.
+
+    ```bash
+    $ git pull --rebase origin latest/dev
+    ```
+
+    Because your local `latest/dev` branch is configured to track the `latest/dev` branch in the upstream "origin" repository, you can omit the last two parameters from the command `git pull` command:
+
+    ```bash
+    $ git pull --rebase
+    ```
+
+    We use the rebasing strategy for all merges. It is recommended you make this the default behaviour for the `git pull` command when run against any of your local Git repositories:
+
+    ```bash
+    $ git config --global pull.rebase true
+    ```
+
+    Note, this changes Git's global configuration and will modify the default behaviour of the `git pull` command across all Git repositories on your local computer. With this configuration in place, you can now omit the `--rebase` option:
+
+    ```bash
+    $ git pull
+    ```
+
+4.  #### Create an issue branch
+
+    Normally, there will be just one [Engineer](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/roles/engineer.md) assigned to an issue. The person assigned should be the solo committer to the corresponding issue branch.
+
+    Branch off from `latest/dev` to create an issue branch. It is to this temporary branch that you will commit your changes.
+
+    Use the following naming convention for the issue branch, where `[number]` is the issue number and `[description]` is a hyphen-delimited URL slug taken from the issue title.
+
+    ```bash
+    latest/issue/[number]-[description]
+    ```
+
+    Examples:
+
+    - `latest/issue/3-bug-scss-parse-error`
+    - `latest/issue/15-feature-color-functions`
+    - `latest/issue/21-refactor-copyright-annotations`
+
+    Use the following Git commands to create the issue branch:
+
+    ```bash
+    $ git branch latest/issue/[number]-[description]
+    $ git checkout latest/issue/[number]-[description]
+    ```
+
+    Or, more succintly:
+
+    ```bash
+    $ git checkout -b latest/issue/[number]-[description]
+    ```
+
+    Examples:
+
+    ```bash
+    $ git checkout -b latest/issue/3-bug-scss-parse-error
+    $ git checkout -b latest/issue/15-feature-color-functions
+    $ git checkout -b latest/issue/21-refactor-copyright-annotations
+    ```
+
+    From v2.23 Git offers a slightly more intuitive syntax to switch between branches, and to optionally create branches if they do not already exist:
+
+    ```bash
+    $ git switch (--create|-c) latest/issue/[number]-[description]
+    ```
+
+    Push your new local branch to the upstream repository. Use the `--set-upstream` option, or its alias `-u`, to have your local issue branch track a branch of the same name in the upstream repository.
+
+    ```bash
+    $ git push -u origin latest/issue/[number]-[description]
+    ```
+
+5.  #### Commit changes
+
+    Do your work.
+
+    If you will make substantive changes over a long period, you should make regular commits, organising your changes in logical increments and iterations.
+
+    ```bash
+    $ git add [file1] [file2] [file3]
+    $ git commit -m "Issue #[number] (WIP) - [description]"
+    ```
+
+    Example:
+
+    ```bash
+    $ git commit -m "Issue #52 (WIP) - Nudge default line-height on document body"
+    ```
+
+    Commit messages must be prefixed with "Issue #[number]". Some code repository hosting services will transform this syntax into hyperlinks between commits and issues.
+
+6.  #### Keep your local repository synced with the upstream repository
+
+    Long-lived issue branches must be kept synchronised with the main line of the upstream repository, so you're always building on top of the latest changes introduced by other contributors. It means your work won't diverge too far, hopefully producing a nice clean diff and minimal conflicts when the time comes to integrate your changes into the next release of the software.
+
+    Use the following commands to fetch the latest changes from the `latest/dev` branch in the upstream repository:
+
+    ```bash
+    $ git checkout latest/dev
+    $ git pull --rebase (origin latest/dev)
+    ```
+
+    Return to your issue branch and rebase it on your newly-synced local `latest/dev` branch. This will replay your changes after everyone else's. In effect, your changes stay on top, as though you've just done your work on a completely fresh clone of the upstream repository.
+
+    ```bash
+    $ git checkout latest/issue/[number]-[description]
+    $ git rebase latest/dev
+    ```
+
+    Alternatively, you can rebase your issue branch directly on the upstream `latest/dev` branch:
+
+    ```bash
+    $ git checkout latest/issue/[number]-[description]
+    $ git pull --rebase (origin latest/dev)
+    ```
+
+    If you get conflicts during the rebasing process, resolve them and then continue the rebase.
+
+    ```bash
+    $ git add [file1] [file2]
+    $ git rebase --continue
+    ```
+
+    Do not revert changes made by other contributors if they conflict with yours. Rather, it is _your_ work that will need to change for it to remain compatible with the latest iteration of the software that you're rebasing your work on.
+
+    It is recommended to rebase your work on `latest/dev` regularly — at least once a day.
+
+        -->
+
+        <h3 id="push">Push</h3>
+
+        <!--
+
+        Merge requests (also known as pull requests in the context of inter-repository merges) are created in code hosting services and are not part of the Git source control system itself.
+
+7.  #### Push to the upstream repository
+
+    After rebasing, push your local changes to the upstream repository. Because rebasing changes history, you may need to use the `--force` or `-f` option to force the new local history into the remote. There is no harm in modifying the history of your issue branches, as long as you are the solo committer to those branches.
+
+    ```bash
+    $ git checkout latest/issue/[number]-[description]
+    $ git push --force (origin latest/issue/[number]-[description])
+    ```
+
+    If you're working on a long-running issue, push your work upstream regularly. Use our source control hosting system — GitLab, in our case — as a backup server.
+
+8.  #### Request a merge
+
+    When your work is done, and with everything pushed to the upstream repository, you can request to have your changes merged onto the main line tracks. Even Tech Leads should request their changes be reviewed by peers before merging into the main line.
+
+    From the homepage of the upstream repository, open a merge request (also known as a "pull request") and choose the following options:
+
+    - Base branch: `latest/dev`
+    - Head branch: `latest/issue/[number]-[description]`
+
+    Merge requests should be made to the `latest/dev` branch, which is the default. The title of the merge request must concisely summarise the changes introduced. If appropriate, this may be copied from the title of the original issue. Examples:
+
+    ```
+    BUG: SCSS parse error
+    FEATURE: Color functions
+    REFACTOR: Update copyright annotations
+    ```
+
+    Add a comment, writing "Resolves #[number]" at the top, followed by a blank line, then write acceptance criteria based on the requirements specified in the original issue. Example:
+
+    ```
+    Resolves #15
+
+    #### Acceptance criteria
+
+    - [ ] The URL https://example.com/locations returns 200 OK and a "Coming soon" message
+    ```
+
+    Assign one of the project's Tech Leads to review your work. Assign the same Tech Lead to the corresponding issue, since the Tech Lead will now take ownership of the issue branch, too.
+
+9.  #### Tidy up
+
+    With your work complete and pushed to the remote origin repository, you can delete the issue branch from your local repository using the `--delete` or `-d` option on the `git branch` command.
+
+    ```bash
+    $ git checkout latest/dev
+    $ git branch --delete latest/issue/[number]
+    ```
+
+    You will receive a warning, though the local branch will be successfully deleted. This just tells you that the branch has not been merged into the main line yet, but it has been pushed to the remote.
+
+    ```bash
+    warning: deleting branch 'latest/issue/3-bug-scss-parse-error' that has been merged to
+         'refs/remotes/origin/latest/issue/3-bug-scss-parse-error', but not yet merged to HEAD.
+    ```
+
+        -->
+
+        <h3 id="merge">Merge</h3>
+
+        <!--
+
+
+These instructions are for Tech Leads who are responsible for reviewing and merging pull requests from other Engineers. The instructions assume that the upstream repository is referenced as the `origin` remote in your local clone.
+
+A Tech Lead merges development branches onto the main line tracks — starting with the `latest/dev` branch — when the changes are approved for inclusion in the next release of the software. Tech Leads have the freedom to cherry-pick — from open pull requests (aka merge requests) — the changes they want to include in the next release. Pull requests will stay open and un-merged if the changes are on hold for a future release.
+
+1.  #### Synchronise your local development branch
+
+    Rebase your local `latest/dev` branch on the upstream repository. This will fetch and merge recent changes introduced by other contributors. If you've recently made changes to `latest/dev` in your local repository, but not yet pushed those changes upstream, the rebasing process will move your local changes on top of what everyone else has done.
+
+    ```bash
+    $ git checkout latest/dev
+    $ git pull --rebase
+    ```
+
+2.  #### Replicate the issue branch in your local repository
+
+    Run the following command to checkout the issue branch that was created by the contributors whose work you are reviewing. This will create a new local branch named `latest/issue/[number]-[description]` based on the remote branch of the same name, with tracking between the two branches automatically configured.
+
+    ```bash
+    $ git checkout --track origin/latest/issue/[number]-[description]
+    ```
+
+3.  #### Rebase on the development branch
+
+    Rebase the newly pulled issue branch on `latest/dev`. This will replay the new changes after everything else that has recently been committed by other people. In effect, the new changes stay on top, as though the work was recently done by the contributor on a fresh clone of the upstream repository.
+
+    ```bash
+    $ git rebase latest/dev
+    ```
+
+    If you get conflicts during the rebasing process, resolve them and then continue the rebase.
+
+    ```bash
+    $ git add [file1] [file2]
+    $ git rebase --continue
+    ```
+
+4.  #### Test the changes
+
+    If necessary, introduce new commits to the issue branch to get everything working as expected. Review associated tests and documentation.
+
+    ```bash
+    $ git add [file1] [file2] [file3]
+    $ git commit -m "Issue #[number] - Fix conflicts between old and new routing config"
+    ```
+
+5.  #### Log the changes
+
+    When you approve of the changes and want to include them in the next release of the software, record the changes in the "Unreleased" section at the top of the `CHANGELOG.md` file. Later, this will become the version number of the next release.
+
+    ```bash
+    # Changelog
+
+    #### Unreleased
+    - A short description of the change being merged
+    - Another change recently merged but not yet released
+    ```
+
+    The format of the changelog should be based on the [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) convention.
+
+    Commit the changes to the CHANGELOG.
+
+    ```bash
+    $ git add CHANGELOG.md
+    $ git commit -m "Issue #[number] - Add to CHANGELOG"
+    ```
+
+6.  #### Merge onto the development branch
+
+    There are two ways to merge the issue changes into the development branch. You can use the `rebase` strategy again:
+
+    ```bash
+    $ git checkout latest/dev
+    $ git rebase latest/issue/[number]-[description]
+    ```
+
+    Alternatively you can use the `merge` strategt with the `--ff-only` option. The `--ff-only` option ensures that the merge will fail if the changes being merged cannot be fast-forwarded, ie if there is divergent work in the target `latest/dev` branch that is not in the source branch. If a `MergeException` is raised, make sure that everything in `latest/dev` has been merged into the issue branch, and try again.
+
+    ```bash
+    $ git checkout latest/dev
+    $ git merge --ff-only latest/issue/[number]-[description]
+    ```
+
+    Optionally, you can use the `--squash` option with the `merge` strategy. This will combine all the incoming changes from the issue branch and stage them. None of the individual commits from the issue branch are copied. Instead you will integrate all the changes in a single commit. Use this option only if you intend to delete the issue branch (if there is no outstanding work-in-progress to be merged at a later date), else you'll get merge conflicts down the road because the same changes will have been introduced via different commits to the issue and development branches.
+
+    ```bash
+    $ git merge --squash --ff-only latest/issue/[number]-[description]
+    ```
+
+7.  #### Commit the merge
+
+    When all the work from the issue branch is successfully merged and staged, record the merge with a new commit. Use the following format for the commit message. Note, you are referencing the `[number]` of the PR, not the original issue. This should close both, because the issue is also referenced in the PR message.
+
+    ```bash
+    $ git commit -m "Resolves #[number] - [description]"
+    ```
+
+8.  #### Push the changes upstream
+
+    Push the changes to the `latest/dev` branch in the upstream repository.
+
+    ```bash
+    $ git push
+    ```
+
+    If you get merge conflicts with the upstream `latest/dev` branch, someone else must have recently pushed new work upstream that you do not have. Resync your local development branch with the upstream one, before pushing upstream again.
+
+    ```bash
+    $ git checkout latest/dev
+    $ git pull --rebase
+    $ git push
+    ```
+
+9.  #### Close the merge request and issue
+
+    At this stage, even though the changes are not yet released, the changes are on track towards release. The PR is merged onto the default branch, and the original issue is considered to be resolved. Go ahead and close the PR and issue, if they have not been closed automatically by GitLab's automation tools.
+
+10. #### Tidy up
+
+    With the changes merged onto the main line and pushed to the upstream repository, you can delete the issue branch from your local repository. You will need to force-delete the branch; the reason is that because no explicit merge commit was recorded, you will get an error saying that the branch is not fully merged.
+
+    ```bash
+    $ git branch --delete --force latest/issue/[number]
+    ```
+
+    Or:
+
+    ```bash
+    $ git branch --D latest/issue/[number]
+    ```
+
+    It is also good practice to delete issue branches from the upstream repository as soon as they are merged onto the main line.
+
+    ```bash
+    $ git push origin --delete latest/issue/[number]
+    ```
+
+With the changes from the PR merged onto the default `latest/dev` branch, the changes have started their journey via testing towards release. Repeat the above steps for all changes that you want to include in the next release, then proceed to the [testing](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/source-control/workflow/testing.md) step.
+
+
+        TODO: You can use GitHub/GitLab's automated merge tools...
+
+        TODO: Issue branches should be SQUASHED when merged into the main development branch, and so brought into the main line tracks. The idea is that the commit history on the main line should represent the high-level changelog and release history, rather than the more granular detail of the behind-the-scenes development effort. This makes it easy to step through a project's history and understand what changes were introduced, and when.
+
+        The downside is that squashing commits when they are moved from a source branch to a target branch has the effect of creating entirely different commit histories for the source and target branches, which can lead to all sorts of merge conflicts if you try to further sync the two branches in the future. Therefore, once an issue branch has been squash-merged into latest/dev, the issue branch MUST BE deleted.
+
+        If you need to make further changes to resolve integration issues, you can either commit those patches directly to latest/dev, or open new issues in the tracker.
+
+        So, there are two ways to do the integration:
+
+        - Squash merges (do this only if the issue branch will be subsequently deleted)
+        - Interactive rebasing
+
+        The second option is preferred, but it is more complex.
+
+        Interactive rebasing is a powerful tool for synchronising ongoing development with changes introduced upstream by other contributors.
+
+        Add the <code>-i</code> or <code>--interactive</code> flag to the <code>git rebase</code> command. You will jump into an editing buffer that will give you the opportunity to clean up your commit history. You can edit and remove individual commits, split them up, reorder them, and even squash some together.
+
+        For each commit that you make, you can choose to pick, squash, edit or drop:
+
+        - **Pick**: This is the default behaviour when you don't do interactive rebasing. It attempts to merge the commit, but you'll be asked to manually resolve any conflicts that the `git` program can't handle itself.
+        - **Squash**: A squashed commit will have its changes folded into the contents of the preceding commit.
+        - **Edit**: The rebasing process will stop and return you to the shell, with the local filesystem tree reflecting the project's state at the selected commit. The original commit's changes will be staged, ready for inclusion when you run `git commit`. You can make changes to the original commit, before committing it again. And you can introduce additional commits. Run `git rebase --continue` when you're done. You'll be returned to the rebasing process where you left off.
+        - **Drop**: This option removes a commit. Use this cautiously. It will cause merge conflicts if any later commits build on the dropped changes.
+
+        So, you use interactive rebase (`git rebase -i`) to squash multiple commits into one and reorder them. This functionality is useful if you made a couple of commits for small changes during development and you want to replace them with a single commit or if you want to make the order more logical. However, you should never rebase commits that you've already pushed to the upstream repository. Someone else may have referred to the commits or cherrypicked them. When you rebase you change the identifier (SHA1) of the commit, and this can cause merge problems, and also makes things like code review harder (people could end up reviewing things twice).
+
+        -->
+
+        <h3 id="test">Test</h3>
+
+        <!--
+
+        This may cover wider QA checks...
+
+
+When all the changes for the next release are [merged](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/source-control/workflow/merging.md) into the `latest/dev` branch, the next release can be prepared.
+
+Prior to release, final quality assurance checks are undertaken via the various main line tracks that represents different stages of testing: `latest/alpha`, `latest/beta` and `latest/rc`.
+
+1.  #### Checkout the development branch
+
+    ```bash
+    $ git checkout latest/dev
+    ```
+
+2.  #### Review the changelog
+
+    Review the contents of the `CHANGELOG` file. The "Unreleased" section at the top should already list all the functional changes and bug fixes that have already been integrated for inclusion in the next release. Double check that all changes are included by reviewing the recent commit history of the upstream `latest/dev` branch.
+
+    ```bash
+    #### Unreleased
+    - Install Monit
+    - Install htop
+    - Install vim
+    - Install tmux
+    ```
+
+3.  #### Bump the version number
+
+    Choose a version number for the next release. It is recommended that you follow Semantic Versioning, the gold standard in software version numbering.
+
+    In the `CHANGELOG` file, change the title of the "Unreleased" section at the top to the new version number. Add a new "Unreleased" header at the top, ready to take a list of changes for the next release.
+
+    ```bash
+    #### Unreleased
+
+    #### v1.1.0 - 2019-04-15
+    - Install Monit
+    - Install htop
+    - Install vim
+    - Install tmux
+    ```
+
+    The version number may also need to be bumped in other source code files such as `package.json`.
+
+    Stage the changes.
+
+    ```
+    $ git add --all
+    ```
+
+4.  #### Commit
+
+    Commit the changes with a comment that identifies the new version number.
+
+    ```bash
+    $ git commit -m "Release v2.3.11"
+    ```
+
+    Against the last commit, create an annotated tag.
+
+    ```bash
+    $ git tag -a v2.3.11 -m "v2.3.11"
+    ```
+
+    Push the changes, including the new tag, to the `latest/dev` branch in the upstream "origin" repository. The `--follow-tags` option tells Git to push relevant annotated tags that are included on the branch being pushed, along with the source code.
+
+    ```bash
+    $ git push --follow-tags
+    ```
+
+    Alternatively, you can push the commits and the tags separately.
+
+    ```bash
+    $ git push
+    $git push --tags
+    ```
+
+5.  #### Fetch the latest alpha build
+
+    Ensure that the `latest/alpha` branch in your local repository is in sync with the `latest/alpha` branch in the upstream "origin" repository.
+
+    ```bash
+    $ git checkout latest/alpha
+    $ git pull --rebase (origin latest/alpha)
+    ```
+
+6.  #### Handover to testing
+
+    Merge `latest/dev` into `latest/alpha`. Use the fast-forward-only strategt (`--ff-only`). The merge will fail with a `MergeException` if the merge cannot be fast-forwarded, ie if there is divergent work in the target `latest/alpha` branch that is not in the source `latest/dev` branch.
+
+    ```bash
+    $ git merge --ff-only latest/dev
+    ```
+
+    Push `latest/alpha` to the upstream repository.
+
+    ```bash
+    $ git push (origin latest/alpha)
+    ```
+
+7.  #### Testing
+
+    Your organisation's internal quality assurance procedures can now begin. The Testers will now take over the process, and will pull the code change changes through the `latest/beta` branch...
+
+    ```bash
+    $ git checkout latest/beta
+    $ git pull --rebase (origin latest/beta)
+    $ git merge --ff-only latest/alpha
+    $ git push (origin latest/beta)
+    ```
+
+    ...and then the `latest/rc` branches:
+
+    ```bash
+    $ git checkout latest/rc
+    $ git pull --rebase (origin latest/rc)
+    $ git merge --ff-only latest/beta
+    $ git push (origin latest/rc)
+    ```
+
+    If fixes need to be introduced, this must be done via the `latest/dev` branch, with the version patch number being bumped each time.
+
+The software is now ready for [release](//gitlab.com/hacksinc/technical-documentation/-/blob/main/operations/source-control/workflow/releasing.md) to production environments.
+
+
+        -->
+
+        <h3 id="release">Release</h3>
+
+        <!--
+
+When all of the changes for the next release are merged, reviewed and tested, you can distribute the release.
+
+1.  #### Merge the version into the stable branch
+
+    ```bash
+    $ git checkout latest/stable
+    $ git pull --rebase (origin latest/stable)
+    $ git merge --ff-only latest/rc
+    $ git push (origin latest/stable)
+    ```
+
+2.  ## Distribute the release
+
+    The release is now ready for distribution. Depending on the nature of the software, this may involve deployment to production servers or publishing to package repositories. You may choose to automate this step by configuring continuous delivery services to run automatically on new pushes to the upstream repository's `latest/stable` branch.
+
+
+        -->
+
+      </div>
+    </section>
+
+    <section class="SPEC/SECTION">
+      <div class="RichText">
+        <h2 id="variations">Variations</h2>
+        <!--<p>No one source control workflow can be the perfect fit for every software engineering practice. SrcFlow is intended to be used as a <em>starter template</em> for the design of an engineering process that is fitting for your unique set of business requirements.</p>-->
+        <!-- Many SrcFlow steps are optional, and you can modify any step for your own needs. For example, your workflow may require two or more developers to work on a single issue branch simultaneously. If so, that's okay, you can scale SrcFlow to accommodate that workflow. You will just have to add a requirement that all local instances of issue branches are regularly checked in and rebased on the tracked upstream branch.</p>-->
+      </div>
+    </section>
+
+    <section class="SPEC/SECTION">
+      <div class="RichText">
+        <h2 id="resources">Resources</h2>
+        <p>Further reading and related resources that you may find useful.</p>
+        <ul>
+          <li><a rel="external" href="https://kieranpotts/srcflow">The author's blogpost that introduces SrcFlow</li>
+        </ul>
+      </div>
+    </section>
+
+    <!--
+    <section class="SPEC/SECTION">
+      <div class="RichText">
+        <h2 id="...">...</h2>
+        <p>...</p>
+      </div>
+    </section>
+    -->
+
+  </main>
+
+</body>
+</html>

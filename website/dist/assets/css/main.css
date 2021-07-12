@@ -1,0 +1,1289 @@
+/**
+ * Settings
+ */
+
+/*
+
+// Colours
+
+--color\=page: hsl(0, 100%, 100%);
+
+--color\=text\|default: hsl(0, 0%, 25%);
+--color\=video: hsl(0, 0%, 25%);
+--color\=hr: hsl(0, 0%, 75%);
+--color\=text\|placeholder: hsl(0, 0%, 70%);
+
+--color\=text\|selection: hsl(50, 100%, 50%);
+
+--color\=hyperlink\|default: hsl(200, 70%, 60%); (200, 70%, 55%)
+--color\=hyperlink\|visited: hsl(200, 70%, 60%);
+--color\=hyperlink\|hover: hsl(200, 70%, 45%);
+--color\=hyperlink\|focus: hsl(200, 70%, 45%);
+--color\=hyperlink\|active: hsl(0, 0%, 25%);
+
+--color\=neutral\|100: hsl(0, 0%, 95%);
+--color\=neutral\|400: hsl(0, 0%, 70%);
+--color\=neutral\|600: hsl(0, 0%, 50%);
+
+// Blue (info)
+--color\=signature\|blue\|200: hsl(200, 70%, 95%); (box background)
+--color\=signature\|blue\|200: hsl(200, 70%, 80%); (commit blob fill)
+--color\=signature\|blue\|400: hsl(200, 70%, 60%); (commit blob stroke, hyperlink)
+--color\=signature\|blue\|600: hsl(200, 70%, 45%); (active hyperlink)
+
+// Orange (warning)
+--color\=signature\|orange\|100: hsl(25, 85%, 95%); (box background)
+--color\=signature\|orange\|200: hsl(25, 85%, 78%); (commit blob fill)
+--color\=signature\|orange\|400: hsl(25, 85%, 60%); (commit blob stroke)
+
+// Green (success)
+--color\=signature\|green\|100: hsl(70, 60%, 90%); (box background)
+--color\=signature\|green\|200: hsl(70, 60%, 65%); (commit blob fill)
+--color\=signature\|green\|400: hsl(70, 60%, 45%); (commit blob stroke)
+
+// Purple
+--color\=signature\|green\|200: hsl(300, 25%, 75%); (commit blob fill)
+--color\=signature\|green\|400: hsl(300, 25%, 60%); (commit blob stroke)
+
+// Font sizes
+
+--font-size\=root: 10px;
+
+--font-size\=root\@xs: 10px;
+--font-size\=root\@sm: 11px;
+--font-size\=root\@md: 12px;
+--font-size\=root\@lg: 12px;
+--font-size\=root\@xl: 12px;
+--font-size\=root\@xxl: 12px;
+
+--font-size\=xxl: 3.6rem;
+--font-size\=xl:  2.8rem;
+--font-size\=lg:  2rem;
+--font-size\=md:  1.6rem; (default)
+--font-size\=sm:  1.4rem;
+--font-size\=xs:  1.2rem;
+
+--font-size\=h1: 8.4rem;
+--font-size\=h2: 2.8rem;
+--font-size\=h3: 2rem;
+--font-size\=h4: 1.6rem;
+--font-size\=h5: 1.6rem;
+--font-size\=h6: 1.6rem;
+
+--font-size\=monospace\|block: 1.4rem;
+--font-size\=monospace\|inline: 95%;
+
+// Breakpoints
+
+@custom-media --breakpoint\@xs  screen and (min-width: 25rem);
+@custom-media --breakpoint\@sm  screen and (min-width: 37.5rem);
+@custom-media --breakpoint\@md  screen and (min-width: 50rem);
+@custom-media --breakpoint\@lg  screen and (min-width: 62.5rem);
+@custom-media --breakpoint\@xl  screen and (min-width: 75rem);
+@custom-media --breakpoint\@xxl screen and (min-width: 87.5rem);
+
+*/
+
+/**
+ * Fonts.
+ */
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 100;
+  src: url('../fonts/inter/thin.woff2') format('woff2'),
+       url('../fonts/inter/thin.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  italic;
+  font-weight: 100;
+  src: url('../fonts/inter/thin-italic.woff2') format('woff2'),
+       url('../fonts/inter/thin-italic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 200;
+  src: url('../fonts/inter/extralight.woff2') format('woff2'),
+       url('../fonts/inter/extralight.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  italic;
+  font-weight: 200;
+  src: url('../fonts/inter/extralight-italic.woff2') format('woff2'),
+       url('../fonts/inter/extralight-italic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 300;
+  src: url('../fonts/inter/light.woff2') format('woff2'),
+       url('../fonts/inter/light.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  italic;
+  font-weight: 300;
+  src: url('../fonts/inter/light-italic.woff2') format('woff2'),
+       url('../fonts/inter/light-italic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 400;
+  src: url('../fonts/inter/regular.woff2') format('woff2'),
+       url('../fonts/inter/regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  italic;
+  font-weight: 400;
+  src: url('../fonts/inter/regular-italic.woff2') format('woff2'),
+       url('../fonts/inter/regular-italic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 500;
+  src: url('../fonts/inter/medium.woff2') format('woff2'),
+       url('../fonts/inter/medium.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  italic;
+  font-weight: 500;
+  src: url('../fonts/inter/medium-italic.woff2') format('woff2'),
+       url('../fonts/inter/medium-italic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 600;
+  src: url('../fonts/inter/semibold.woff2') format('woff2'),
+       url('../fonts/inter/semibold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  italic;
+  font-weight: 600;
+  src: url('../fonts/inter/semibold-italic.woff2') format('woff2'),
+       url('../fonts/inter/semibold-italic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 700;
+  src: url('../fonts/inter/bold.woff2') format('woff2'),
+       url('../fonts/inter/bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  italic;
+  font-weight: 700;
+  src: url('../fonts/inter/bold-italic.woff2') format('woff2'),
+       url('../fonts/inter/bold-italic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 800;
+  src: url('../fonts/inter/extrabold.woff2') format('woff2'),
+       url('../fonts/inter/extrabold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  italic;
+  font-weight: 800;
+  src: url('../fonts/inter/extrabold-italic.woff2') format('woff2'),
+       url('../fonts/inter/extrabold-italic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 900;
+  src: url('../fonts/inter/black.woff2') format('woff2'),
+       url('../fonts/inter/black.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  italic;
+  font-weight: 900;
+  src: url('../fonts/inter/black-italic.woff2') format('woff2'),
+       url('../fonts/inter/black-italic.woff') format('woff');
+}
+
+/**
+ * Reset
+ */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html {
+  background: hsl(0, 100%, 100%); /* --color\=page */
+  min-width: 320px;
+}
+
+body {
+  margin: 0; /* left-aligned */
+}
+
+body {
+  overflow-x: auto;
+  overflow-y: scroll;
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  font-weight: 300;
+}
+
+body * {
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+b, strong {
+  font-weight: 500;
+}
+
+code, kbd, pre, samp, var {
+  font-family: ui-monospace, SFMono-Regular, Monaco, Menlo, Consolas, Inconsolata, 'Liberation Mono', 'Deja-vu Sans Mono', 'Courier New', monospace;
+  font-weight: 400;
+}
+
+code b, kbd b, pre b, samp b, var b,
+code strong, kbd strong, pre strong, samp strong, var strong {
+  font-weight: 700;
+}
+
+var {
+  font-style: normal;
+}
+
+em, i {
+  font-style: italic;
+}
+
+html {
+  font-size: 10px; /* --font-size\=root */
+}
+
+html * {
+  font-size: 100%;
+}
+
+ul ul,
+ol ol,
+ul ol,
+ol ul {
+  font-size: 100%;
+}
+
+@media screen and (min-width: 25rem) { /* --breakpoint\@xs */
+  html {
+    font-size: 10px; /* --font-size\=root\@xs */
+  }
+}
+
+@media screen and (min-width: 37.5rem) { /* --breakpoint\@sm */
+  html {
+    font-size: 11px; /* --font-size\=root\@sm */
+  }
+}
+
+@media screen and (min-width: 50rem) { /* --breakpoint\@md */
+  html {
+    font-size: 12px; /* --font-size\=root\@md */
+  }
+}
+
+@media screen and (min-width: 62.5rem) { /* --breakpoint\@lg */
+  html {
+    font-size: 12px; /* --font-size\=root\@lg */
+  }
+}
+
+@media screen and (min-width: 75rem) { /* --breakpoint\@xl */
+  html {
+    font-size: 12px; /* --font-size\=root\@xl */
+  }
+}
+
+@media screen and (min-width: 87.5rem) { /* --breakpoint\@xxl */
+  html {
+    font-size: 12px; /* --font-size\=root\@xxl */
+  }
+}
+
+body {
+  font-size: 1.6rem; /* --font-size\=md */
+}
+
+pre {
+  display: block;
+  font-size: 1.4rem; /* --font-size\=monospace\|block */
+}
+
+code, kbd, samp, var {
+  display: inline-block;
+  font-size: 90%; /* --font-size\=monospace\|inline */
+}
+
+body {
+  line-height: 1;
+}
+
+body * {
+  line-height: inherit;
+}
+
+pre {
+  line-height: 1;
+}
+
+html {
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  text-size-adjust: 100%;
+}
+
+body {
+  color: hsl(0, 0%, 25%); /* --color\=text\|default */
+}
+
+body * {
+  color: inherit;
+}
+
+svg {
+  fill: currentColor;
+}
+
+ol,
+ul {
+  list-style-position: inside;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  list-style: inherit;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid hsl(0, 0%, 75%); /* --color\=hr */
+  height: 0;
+}
+
+code {
+  white-space: nowrap;
+}
+
+pre {
+  white-space: pre;
+  word-wrap: normal;
+}
+
+pre code {
+  white-space: pre;
+}
+
+abbr,
+dfn {
+  text-decoration: none;
+}
+
+abbr[title],
+dfn[title] {
+  cursor: help;
+}
+
+dfn {
+  font-style: normal;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote::before, blockquote::after,
+q::before, q::after {
+  content: '';
+}
+
+cite {
+  font-style: normal;
+}
+
+del,
+ins {
+  text-decoration: none;
+}
+
+s,
+u {
+  text-decoration: none;
+}
+
+mark {
+  background: transparent;
+  color: inherit;
+}
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+small {
+  font-size: 100%;
+}
+
+address {
+  font-style: normal;
+}
+
+::before,
+::after {
+  text-decoration: inherit;
+  vertical-align: inherit;
+}
+
+::selection {
+  background: hsl(50, 100%, 50%); /* --color\=text\|selection */
+  color: inherit;
+  text-shadow: none;
+}
+
+table {
+  border: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  table-layout: auto;
+  text-align: left;
+  vertical-align: middle;
+  width: 100%;
+}
+
+*[dir="rtl"] table {
+  text-align: right;
+}
+
+tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
+  background: inherit;
+  border: inherit;
+  font-weight: inherit;
+  margin: inherit;
+  padding: inherit;
+  text-align: inherit;
+  vertical-align: inherit;
+}
+
+caption {
+  caption-side: top;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+optgroup {
+  font-style: normal;
+  font-weight: 500;
+}
+
+optgroup option {
+  font-weight: 300;
+}
+
+a {
+  color: inherit;
+  outline: none;
+  text-decoration: underline;
+}
+
+*:focus {
+  outline-color: hsla(50, 100%, 50%, .75);
+  outline-offset: 2px;
+  outline-style: solid;
+  outline-width: 2px;
+}
+
+*:focus:active {
+  outline-width: 0;
+}
+
+*[tabindex="-1"],
+*[tabindex="-1"]:focus {
+  outline: none;
+}
+
+a,
+button,
+details,
+input[type="button"],
+input[type="color"],
+input[type="image"],
+input[type="range"],
+input[type="reset"],
+input[type="submit"] {
+  cursor: pointer;
+}
+
+button[disabled],
+input[disabled],
+select[disabled],
+textarea[disabled] {
+  cursor: default;
+}
+
+*[accesskey]::after {
+  content: ' [' attr(accesskey) ']';
+}
+
+fieldset {
+  border: 0;
+}
+
+label {
+  display: block;
+}
+
+button,
+input,
+select,
+textarea {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  display: block;
+  width: 100%;
+}
+
+select[multiple],
+select[size] {
+  height: auto;
+}
+
+input[type="color"] {
+  display: inline-block;
+  width: 60px;
+}
+
+input[type="image"] {
+  display: inline-block;
+  width: auto;
+}
+
+textarea {
+  min-height: 10em;
+  overflow: auto;
+  resize: none;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  border-sizing: border-box;
+  display: inline-block;
+  padding: 0;
+  vertical-align: baseline;
+  width: auto;
+}
+
+button {
+  appearance: button;
+}
+
+input[type="search"] {
+  appearance: textfield;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  appearance: none;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border-width: 0;
+  padding: 0;
+}
+
+select:-moz-focusring,
+select::-moz-focus-inner {
+  color: transparent;
+  text-shadow: 0 0 0 hsl(0, 100%, 100%); /* --color\=page */
+}
+
+input[type="range"]::-moz-focus-outer {
+  border: 0;
+}
+
+::placeholder {
+  color: hsl(0, 0%, 70%); /* --color\=text\|placeholder */
+  opacity: 1;
+}
+
+input::-ms-clear,
+input::-ms-reveal {
+  display: none;
+}
+
+audio,
+video {
+  display: block;
+}
+
+audio:not([controls]) {
+  display: none;
+}
+
+img {
+  border: 0;
+  display: block;
+  height: auto;
+  -ms-interpolation-mode: bicubic;
+  max-width: 100%;
+}
+
+video {
+  background: hsl(0, 0%, 25%); /* --color\=video */
+  max-width: 100%;
+}
+
+iframe,
+embed,
+object {
+  display: block;
+  max-width: 100%;
+}
+
+iframe {
+  border: 0;
+}
+
+canvas {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+address,
+article,
+aside,
+details,
+footer,
+header,
+main,
+nav,
+section,
+summary {
+  display: block;
+}
+
+meter,
+progress {
+  display: inline-block;
+}
+
+*[unselectable] {
+  user-select: none;
+}
+
+*[hidden],
+template {
+  display: none !important;
+}
+
+address::after,
+article::after,
+aside::after,
+blockquote::after,
+details::after,
+div::after,
+dl::after,
+fieldset::after,
+figure::after,
+footer::after,
+form::after,
+header::after,
+main::after,
+nav::after,
+ol::after,
+section::after,
+ul::after {
+  clear: both;
+  content: '';
+  display: table;
+}
+
+/*
+
+*:first-child {
+  margin-top: 0 !important;
+}
+
+*:last-child {
+  margin-bottom: 0 !important;
+}
+
+*/
+
+/**
+ * Layout
+ */
+
+body.SPEC {
+  max-width: 100rem;
+  padding: 2rem;
+}
+
+@media screen and (min-width: 25rem) { /* --breakpoint\@xs */
+}
+
+@media screen and (min-width: 37.5rem) { /* --breakpoint\@sm */
+  body.SPEC {
+    padding: 4rem;
+  }
+}
+
+@media screen and (min-width: 50rem) { /* --breakpoint\@md */
+}
+
+@media screen and (min-width: 62.5rem) { /* --breakpoint\@lg */
+  body.SPEC {
+    padding-left: 34rem;
+  }
+}
+
+@media screen and (min-width: 75rem) { /* --breakpoint\@xl */
+}
+
+@media screen and (min-width: 87.5rem) { /* --breakpoint\@xxl */
+  body.SPEC {
+    max-width: 106rem;
+    padding-left: 40rem;
+  }
+}
+
+.SPEC\/SECTION {
+  margin-top: 8rem;
+  margin-bottom: 8rem;
+}
+
+.SPEC\/SECTION:first-child {
+  margin-top: 0;
+}
+
+.SPEC\/SECTION:last-child {
+  margin-bottom: 0;
+}
+
+.SPEC\/SECTION_OPENER {}
+
+.SPEC\/SECTION_TOC {}
+
+@media screen and (min-width: 62.5rem) { /* --breakpoint\@lg */
+  .SPEC\/SECTION_TOC {
+    background:hsl(0, 0%, 95%); /* --color\=neutral\|100 */
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    overflow: auto;
+    padding: 4rem;
+    position: fixed;
+    top: 0;
+    width: 30rem;
+  }
+}
+
+/**
+ * Components
+ */
+
+.RichText h2 {
+  font-size: 2.8rem; /* --font-size\=h2 */
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.RichText h3 {
+  font-size: 2rem; /* --font-size\=h3 */
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.RichText p,
+.RichText ul,
+.RichText ol {
+  line-height: 1.6;
+}
+
+.RichText h2 {
+  margin-top: 8rem;
+}
+
+.RichText h2:first-child {
+  margin-top: 0;
+}
+
+.RichText h3 {
+  margin-top: 4rem;
+}
+
+/*.RichText h2 + h3 {
+  margin-top: 2rem;
+}*/
+
+.RichText h3:first-child {
+  margin-top: 0;
+}
+
+.RichText h2 {
+  margin-bottom: 4rem;
+}
+
+.RichText h3,
+.RichText p,
+.RichText ul,
+.RichText ol {
+  margin-bottom: 2rem;
+}
+
+.RichText h2:last-child,
+.RichText h3:last-child,
+.RichText p:last-child,
+.RichText ul:last-child,
+.RichText ol:last-child {
+  margin-bottom: 0;
+}
+
+.RichText figure,
+.RichText hr {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
+
+.RichText figure:first-child,
+.RichText hr:first-child {
+  margin-top: 0;
+}
+
+.RichText figure:last-child,
+.RichText hr:last-child {
+  margin-bottom: 0;
+}
+
+.RichText figure img {
+  margin: 0 auto;
+}
+
+.RichText figcaption {
+  font-weight: 500;
+  text-align: center;
+}
+
+.RichText figcaption:first-child {
+  margin-bottom: 1rem;
+}
+
+.RichText figcaption:last-child {
+  margin-top: 1rem;
+}
+
+.RichText li {
+  margin-bottom: 1rem;
+}
+
+ul.RichText--narrow li {
+  margin-bottom: 0;
+}
+
+.RichText li:last-child {
+  margin-bottom: 0;
+}
+
+.RichText ol {
+  counter-reset: richtext-ol-counter;
+  list-style-type: none;
+}
+
+.RichText ol li {
+  counter-increment: richtext-ol-counter;
+}
+
+.RichText ul ul,
+.RichText ol ol {
+  padding-left: 2em;
+}
+
+.RichText ul li,
+.RichText ol li {
+  padding-left: 1.5em;
+  position: relative;
+}
+
+.RichText ul li::before {
+  color: hsl(0, 0%, 70%); /* --color\=neutral\|400 */
+  content: '\2014'; /* em-dash */
+  font-weight: 500;
+  left: 0;
+  position: absolute;
+}
+
+.RichText ol li::before {
+  color: hsl(0, 0%, 70%); /* --color\=neutral\|400 */
+  content: counter(richtext-ol-counter);
+  font-weight: 500;
+  left: 0;
+  position: absolute;
+}
+
+.RichText hr {
+  /* Doesn't override the default */
+}
+
+.RichText table {
+  margin: 0 auto;
+  padding: 0.5em 1em;
+  width: auto;
+}
+
+.RichText table th:first-child,
+.RichText table td:first-child {
+  padding-left: 0;
+}
+
+.RichText table th:last-child,
+.RichText table td:last-child {
+  padding-right: 0;
+}
+
+.RichText pre {
+  background: hsl(0, 0%, 95%); /* --color\=neutral\|100 */
+  padding: 2rem;
+}
+
+.RichText code {
+  background: hsl(0, 0%, 95%); /* --color\=neutral\|100 */
+  padding: 0.1em 0.5em;
+  /*vertical-align: 1px;*/
+}
+
+.RichText a {
+  color: hsl(200, 70%, 60%); /* --color\=hyperlink\|default */
+  font-weight: 500;
+  text-decoration: underline;
+  transition: color 0.25s ease-out;
+}
+
+.RichText a:visited {
+  color: hsl(200, 70%, 60%); /* --color\=hyperlink\|visited */
+}
+
+.RichText a:hover {
+  color: hsl(200, 70%, 45%); /* --color\=hyperlink\|hover */
+}
+
+.RichText a:focus {
+  color: hsl(200, 70%, 45%); /* --color\=hyperlink\|focus */
+  transition: none;
+}
+
+.RichText a:active {
+  color: hsl(0, 0%, 25%); /* --color\=hyperlink\|active */
+  outline: none;
+  transition: none;
+}
+
+.RichText\/BoxOut {
+  background:hsl(0, 0%, 95%); /* --color\=neutral\|100 */
+  /*font-size: 1.4rem; /* --font-size\=sm */
+  /*font-weight: 500;*/
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 2rem;
+}
+
+.RichText\/BoxOut--info {
+  background:hsl(200, 70%, 95%); /* --color\=signature\|blue\|100 */
+}
+
+.RichText\/BoxOut--warning {
+  background:hsl(25, 85%, 95%); /* --color\=signature\|orange\|100 */
+}
+
+.RichText\/BoxOut--success {
+  background:hsl(70, 60%, 90%); /* --color\=signature\|green\|100 */
+}
+
+.RichText\/BoxOut:first-child {
+  margin-top: 0;
+}
+
+.RichText\/BoxOut:last-child {
+  margin-bottom: 0;
+}
+
+.ToC {
+  line-height: 1.6;
+}
+
+@media screen and (min-width: 62.5rem) { /* --breakpoint\@lg */
+  .ToC {
+    font-size: 1.2rem; /* --font-size\=xs */
+  }
+}
+
+/* Nudge then font size up a bit on screen >= 960px height, enough for
+the menu to fit without overflow. */
+@media screen and (min-width: 62.5rem) and (min-height: 60rem) {
+  .ToC {
+    font-size: 1.3rem;
+  }
+}
+
+/* >= 1040px height */
+@media screen and (min-width: 62.5rem) and (min-height: 65rem) {
+  .ToC {
+    font-size: 1.4rem; /* --font-size\=md */
+  }
+}
+
+h2.ToC\/Title {
+  font-size: 2.8rem; /* --font-size\=h2 */
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 4rem; /* Must be consistent with `.RichText h2` */
+}
+
+ol.ToC\/List,
+ol.ToC\/SubList {
+  counter-reset: toc-list-counter;
+  list-style-type: none;
+}
+
+ol.ToC\/List li,
+ol.ToC\/SubList li {
+  counter-increment: toc-list-counter;
+  padding-left: 1.5em;
+  position: relative;
+}
+
+ol.ToC\/SubList li {
+  padding-left: 2.2em;
+}
+
+ol.ToC\/List li::before,
+ol.ToC\/SubList li::before {
+  color: hsl(0, 0%, 70%); /* --color\=neutral\|400 */
+  content: counters(toc-list-counter, ".");
+  font-weight: 500;
+  left: 0;
+  position: absolute;
+}
+
+li.ToC\/List\/Entry {
+  margin-bottom: 1rem;
+}
+
+li.ToC\/List\/Entry:last-child {
+  margin-bottom: 0;
+}
+
+li.ToC\/SubList\/Entry:first-child {
+  margin-top: 1rem;
+}
+
+li.ToC\/SubList\/Entry {
+  margin-bottom: 0;
+}
+
+a.ToC\/List\/Entry\/Link,
+a.ToC\/SubList\/Entry\/Link {
+  color: hsl(200, 70%, 60%); /* --color\=hyperlink\|default */
+  font-weight: 500;
+  text-decoration: underline;
+  transition: color 0.25s ease-out;
+}
+
+a.ToC\/List\/Entry\/Link:visited,
+a.ToC\/SubList\/Entry\/Link:visited {
+  color: hsl(200, 70%, 60%); /* --color\=hyperlink\|visited */
+}
+
+a.ToC\/List\/Entry\/Link:hover,
+a.ToC\/SubList\/Entry\/Link:hover {
+  color: hsl(200, 70%, 45%); /* --color\=hyperlink\|hover */
+}
+
+a.ToC\/List\/Entry\/Link:focus,
+a.ToC\/SubList\/Entry\/Link:focus {
+  color: hsl(200, 70%, 45%); /* --color\=hyperlink\|focus */
+  transition: none;
+}
+
+a.ToC\/List\/Entry\/Link:active,
+a.ToC\/SubList\/Entry\/Link:active {
+  color: hsl(0, 0%, 25%); /* --color\=hyperlink\|active */
+  outline: none;
+  transition: none;
+}
+
+h1.Title\/Heading {
+  /* font-size and font-weight make the alt text similar to the logotype. */
+  font-size: 8.4rem; /* --font-size\=h1 */
+  font-weight: 100;
+  margin-bottom: 4rem;
+}
+
+.Title\/SubHeading {
+  color: hsl(0, 0%, 50%); /* --color\=neutral\|600 */
+  margin-bottom: 1rem;
+}
+
+.Title\/MetaData {
+  color:hsl(0, 0%, 70%); /* --color\=neutral\|400 */
+  font-size: 1.2rem; /* --font-size\=xs */
+  line-height: 1.4;
+}
+
+.Title\/MetaData a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+/**
+ * Utilities
+ */
+
+ .font-size\=xxl { font-size: 3.6rem /* --font-size\=xxl */ }
+ .font-size\=xl  { font-size: 2.8rem /* --font-size\=xl */  }
+ .font-size\=lg  { font-size: 2rem   /* --font-size\=lg */  }
+ .font-size\=md  { font-size: 1.6rem /* --font-size\=md */  }
+ .font-size\=sm  { font-size: 1.4rem /* --font-size\=sm */  }
+ .font-size\=xs  { font-size: 1.2rem /* --font-size\=xs */  }
+
+.text-only {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+}
+
+@media screen and (min-width: 25rem) { /* --breakpoint\@xs */
+  .text-only\@xs {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+  }
+}
+
+@media screen and (min-width: 37.5rem) { /* --breakpoint\@sm */
+  .text-only\@sm {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+  }
+}
+
+@media screen and (min-width: 50rem) { /* --breakpoint\@md */
+  .text-only\@md {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+  }
+}
+
+@media screen and (min-width: 62.5rem) { /* --breakpoint\@lg */
+  .text-only\@lg {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+  }
+}
+
+@media screen and (min-width: 75rem) { /* --breakpoint\@xl */
+  .text-only\@xl {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+  }
+}
+
+@media screen and (min-width: 87.5rem) { /* --breakpoint\@xxl */
+  .text-only\@xxl {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+  }
+}
